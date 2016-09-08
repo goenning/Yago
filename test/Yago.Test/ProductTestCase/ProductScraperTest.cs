@@ -1,19 +1,19 @@
 ﻿using Xunit;
 using Yago.Test.Helper;
 
-namespace Yago.Test
+namespace Yago.Test.ProductTestCase
 {
-    public class ScraperTest : StaticServerBaseTest
+    public class ProductScraperTest : StaticServerBaseTest
     {
         [Fact]
-        public async void ParseProductTest()
+        public async void ParseSimpleProductTest()
         {
-            var configuration = new CrawlerConfiguration();
+            var configuration = new YagoConfiguration();
             configuration.HttpClient = this.client;
 
-            var crawler = new DefaultCrawler(configuration);
-            crawler.AddParser(new ProductParser());
-            crawler.OnParserExecuted += (parser, result) => 
+            var yago = new YagoClient(configuration);
+            yago.AddParser(new ProductParser());
+            yago.OnPageParsed += (parser, result) => 
             {
                 var product = result as Product;
                 Assert.NotNull(product);
@@ -21,7 +21,7 @@ namespace Yago.Test
                 Assert.Equal(1099.99m, product.Price);
                 Assert.Equal(1399.99m, product.RegularPrice);
             };
-            await crawler.Start("http://www.yagohost.com/products/macbook-pro.html");
+            await yago.Start("http://www.yagohost.com/products/macbook-pro.html");
         }
     }
 }

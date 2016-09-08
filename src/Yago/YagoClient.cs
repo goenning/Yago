@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 
 namespace Yago
 {
-    public delegate void ParserExecutedDelegate(IPageParser parser, object result);
+    public delegate void PageParsedDelegate(IPageParser parser, object result);
 
-    public class DefaultCrawler
+    public class YagoClient
     {
-        private CrawlerConfiguration configuration;
+        private YagoConfiguration configuration;
         private IList<IPageParser> parsers;
 
-        public event ParserExecutedDelegate OnParserExecuted;
+        public event PageParsedDelegate OnPageParsed;
 
-        public DefaultCrawler()
-            : this(new CrawlerConfiguration())
+        public YagoClient()
+            : this(new YagoConfiguration())
         {
         }
 
-        public DefaultCrawler(CrawlerConfiguration configuration)
+        public YagoClient(YagoConfiguration configuration)
         {
             this.configuration = configuration;
             this.parsers = new List<IPageParser>();
@@ -38,7 +38,7 @@ namespace Yago
                 if (pageParser.ShouldParse())
                 {
                     var result = pageParser.Parse(document);
-                    this.OnParserExecuted?.Invoke(pageParser, result);
+                    this.OnPageParsed?.Invoke(pageParser, result);
                 }
             }
         }

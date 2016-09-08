@@ -1,7 +1,7 @@
 ﻿using System;
 using AngleSharp.Dom.Html;
 
-namespace Yago.Test
+namespace Yago.Test.ProductTestCase
 {
     public class ProductParser : IPageParser
     {

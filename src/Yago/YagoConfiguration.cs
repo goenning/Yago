@@ -2,11 +2,11 @@
 
 namespace Yago
 {
-    public class CrawlerConfiguration
+    public class YagoConfiguration
     {
         public HttpClient HttpClient { get; set; }
 
-        public CrawlerConfiguration()
+        public YagoConfiguration()
         {
             this.HttpClient = new HttpClient();
         }

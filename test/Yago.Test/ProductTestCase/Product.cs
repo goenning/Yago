@@ -1,4 +1,4 @@
-﻿namespace Yago.Test
+﻿namespace Yago.Test.ProductTestCase
 {
     public class Product
     {
