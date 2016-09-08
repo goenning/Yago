@@ -21,7 +21,7 @@ namespace Yago.Test.Helper
                     {
                         string content = File.ReadAllText(file);
                         await context.Response.WriteAsync(content);
-                        break;
+                        return;
                     }
                 }
 
