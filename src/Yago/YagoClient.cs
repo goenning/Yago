@@ -25,20 +25,23 @@ namespace Yago
             this.parsers = new List<IPageParser>();
         }
 
-        public async Task Start(string startUrl)
+        public async Task Start(params string[] urls)
         {
-            var message = new HttpRequestMessage(HttpMethod.Get, startUrl);
-            var response = await this.configuration.HttpClient.SendAsync(message);
-            var content = await response.Content.ReadAsStringAsync();
-            var parser = new HtmlParser();
-            var document = parser.Parse(content);
-
-            foreach (var pageParser in this.parsers)
+            foreach(var url in urls)
             {
-                if (pageParser.ShouldParse())
+                var message = new HttpRequestMessage(HttpMethod.Get, url);
+                var response = await this.configuration.HttpClient.SendAsync(message);
+                var content = await response.Content.ReadAsStringAsync();
+                var parser = new HtmlParser();
+                var document = parser.Parse(content);
+
+                foreach (var pageParser in this.parsers)
                 {
-                    var result = pageParser.Parse(document);
-                    this.OnPageParsed?.Invoke(pageParser, result);
+                    if (pageParser.ShouldParse())
+                    {
+                        var result = pageParser.Parse(document);
+                        this.OnPageParsed?.Invoke(pageParser, result);
+                    }
                 }
             }
         }

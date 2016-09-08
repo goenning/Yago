@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace Yago.Test.Helper
+namespace Yago.Test.Assets
 {
     public class StaticServerStartup
     {

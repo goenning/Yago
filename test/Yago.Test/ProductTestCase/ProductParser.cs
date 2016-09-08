@@ -9,9 +9,14 @@ namespace Yago.Test.ProductTestCase
         {
             var details = content.QuerySelector("#product-details");
             var title = details.QuerySelector(".title").TextContent;
-            var current = Convert.ToDecimal(details.QuerySelector(".price").TextContent);
-            var regular = Convert.ToDecimal(details.QuerySelector(".regular-price").TextContent);
-            return new Product(title, current, regular);
+
+            var current = details.QuerySelector(".price");
+            var regular = details.QuerySelector(".regular-price");
+
+            var currentPrice = Convert.ToDecimal(current?.TextContent ?? "0");
+            var regularPrice = Convert.ToDecimal(regular?.TextContent ?? "0");
+
+            return new Product(title, currentPrice, regularPrice);
         }
 
         public bool ShouldParse()

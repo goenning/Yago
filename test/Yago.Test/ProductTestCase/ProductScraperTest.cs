@@ -1,17 +1,15 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using Xunit;
 using Yago.Test.Helper;
 
 namespace Yago.Test.ProductTestCase
 {
-    public class ProductScraperTest : StaticServerBaseTest
+    public class ProductScraperTest : YagoBaseTest
     {
         [Fact]
         public async void ParseSimpleProductTest()
         {
-            var configuration = new YagoConfiguration();
-            configuration.HttpClient = this.client;
-
-            var yago = new YagoClient(configuration);
+            var yago = this.CreateYago();
             yago.AddParser(new ProductParser());
             yago.OnPageParsed += (parser, result) => 
             {
@@ -21,7 +19,32 @@ namespace Yago.Test.ProductTestCase
                 Assert.Equal(1099.99m, product.Price);
                 Assert.Equal(1399.99m, product.RegularPrice);
             };
+
             await yago.Start("http://www.yagohost.com/products/macbook-pro.html");
+        }
+        
+        [Fact]
+        public async void ParseTwoProductsTest()
+        {
+            var products = new List<Product>();
+            var yago = this.CreateYago();
+            yago.AddParser(new ProductParser());
+            yago.OnPageParsed += (parser, result) => products.Add(result as Product);
+
+            await yago.Start(new string[] { 
+                "http://www.yagohost.com/products/macbook-pro.html",
+                "http://www.yagohost.com/products/iphone.html" 
+            });
+
+            Assert.Equal(2, products.Count);
+            
+            Assert.Equal("MacBook Pro", products[0].Title);
+            Assert.Equal(1099.99m, products[0].Price);
+            Assert.Equal(1399.99m, products[0].RegularPrice);
+
+            Assert.Equal("iPhone", products[1].Title);
+            Assert.Equal(600, products[1].Price);
+            Assert.Equal(0, products[1].RegularPrice);
         }
     }
 }
