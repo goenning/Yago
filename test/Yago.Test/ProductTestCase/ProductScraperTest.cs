@@ -9,18 +9,30 @@ namespace Yago.Test.ProductTestCase
         [Fact]
         public async void ParseSimpleProductTest()
         {
+            Product product = null;
             var yago = this.CreateYago();
-            yago.AddParser(new ProductParser());
-            yago.OnPageParsed += (parser, result) => 
-            {
-                var product = result as Product;
-                Assert.NotNull(product);
-                Assert.Equal("MacBook Pro", product.Title);
-                Assert.Equal(1099.99m, product.Price);
-                Assert.Equal(1399.99m, product.RegularPrice);
-            };
+            yago.Use(new ProductParser());
+            yago.OnPageParsed += (parser, result) => product = result as Product;
 
             await yago.Start("http://www.yagohost.com/products/macbook-pro.html");
+
+            Assert.NotNull(product);
+            Assert.Equal("MacBook Pro", product.Title);
+            Assert.Equal(1099.99m, product.Price);
+            Assert.Equal(1399.99m, product.RegularPrice);
+        }
+        
+        [Fact]
+        public async void ShouldIgnoreNonProductPagesTest()
+        {
+            var count = 0;
+            var yago = this.CreateYago();
+            yago.Use(new ProductParser());
+            yago.OnPageParsed += (parser, result) => count++;
+            
+            await yago.Start("http://www.yagohost.com/index.html");
+
+            Assert.Equal(0, count);
         }
         
         [Fact]
@@ -28,13 +40,13 @@ namespace Yago.Test.ProductTestCase
         {
             var products = new List<Product>();
             var yago = this.CreateYago();
-            yago.AddParser(new ProductParser());
+            yago.Use(new ProductParser());
             yago.OnPageParsed += (parser, result) => products.Add(result as Product);
 
-            await yago.Start(new string[] { 
+            await yago.Start(
                 "http://www.yagohost.com/products/macbook-pro.html",
                 "http://www.yagohost.com/products/iphone.html" 
-            });
+            );
 
             Assert.Equal(2, products.Count);
             

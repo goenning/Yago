@@ -4,7 +4,7 @@ namespace Yago
 {
     public interface IPageParser
     {
-        bool ShouldParse();
-        object Parse(IHtmlDocument content);
+        bool ShouldParse(string url, IHtmlDocument document);
+        object Parse(IHtmlDocument document);
     }
 }

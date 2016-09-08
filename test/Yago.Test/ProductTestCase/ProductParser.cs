@@ -5,9 +5,9 @@ namespace Yago.Test.ProductTestCase
 {
     public class ProductParser : IPageParser
     {
-        public object Parse(IHtmlDocument content)
+        public object Parse(IHtmlDocument document)
         {
-            var details = content.QuerySelector("#product-details");
+            var details = document.QuerySelector("#product-details");
             var title = details.QuerySelector(".title").TextContent;
 
             var current = details.QuerySelector(".price");
@@ -19,9 +19,9 @@ namespace Yago.Test.ProductTestCase
             return new Product(title, currentPrice, regularPrice);
         }
 
-        public bool ShouldParse()
+        public bool ShouldParse(string url, IHtmlDocument document)
         {
-            return true;
+            return url.Contains("/products/");
         }
     }
 }

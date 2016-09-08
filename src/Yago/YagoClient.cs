@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System;
 
 namespace Yago
 {
@@ -27,17 +28,17 @@ namespace Yago
 
         public async Task Start(params string[] urls)
         {
+            var parser = new HtmlParser();
             foreach(var url in urls)
             {
                 var message = new HttpRequestMessage(HttpMethod.Get, url);
                 var response = await this.configuration.HttpClient.SendAsync(message);
                 var content = await response.Content.ReadAsStringAsync();
-                var parser = new HtmlParser();
                 var document = parser.Parse(content);
 
                 foreach (var pageParser in this.parsers)
                 {
-                    if (pageParser.ShouldParse())
+                    if (pageParser.ShouldParse(url, document))
                     {
                         var result = pageParser.Parse(document);
                         this.OnPageParsed?.Invoke(pageParser, result);
@@ -46,7 +47,7 @@ namespace Yago
             }
         }
 
-        public void AddParser(IPageParser parser)
+        public void Use(IPageParser parser)
         {
             this.parsers.Add(parser);
         }
