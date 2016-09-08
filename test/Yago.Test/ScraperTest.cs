@@ -15,8 +15,11 @@ namespace Yago.Test
             crawler.AddParser(new ProductParser());
             crawler.OnParserExecuted += (parser, result) => 
             {
-                Assert.IsType(typeof(Product), result);
-                Assert.Equal("MacBook Pro", (result as Product).Title);
+                var product = result as Product;
+                Assert.NotNull(product);
+                Assert.Equal("MacBook Pro", product.Title);
+                Assert.Equal(1099.99m, product.Price);
+                Assert.Equal(1399.99m, product.RegularPrice);
             };
             await crawler.Start("http://www.yagohost.com/products/macbook-pro.html");
         }

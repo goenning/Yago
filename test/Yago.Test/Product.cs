@@ -2,15 +2,15 @@
 {
     public class Product
     {
-        public Product(string title, decimal regular, decimal current)
+        public Product(string title, decimal price, decimal regularPrice)
         {
             Title = title;
-            this.RegularPrice = regular;
-            this.CurrentPrice = current;
+            this.Price = price;
+            this.RegularPrice = regularPrice;
         }
 
         public string Title { get; private set; }
-        public decimal CurrentPrice { get; private set; }
+        public decimal Price { get; private set; }
         public decimal RegularPrice { get; private set; }
     }
 }
