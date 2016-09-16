@@ -1,0 +1,12 @@
+{
+  "name": "yago",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "tslint **/*.ts",
+    "test": "mocha test/"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2"
+  }
+}
