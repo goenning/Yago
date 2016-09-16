@@ -1,5 +1,3 @@
-export class TaskQueue {
-  count(): number {
-    return 0;
-  }
+export abstract class TaskQueue {
+  abstract count(): number;
 }
