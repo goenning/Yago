@@ -1,3 +1,7 @@
+import { Task } from "./Task";
+
 export abstract class TaskQueue {
-  abstract count(): number;
+  abstract count(): Promise<number>;
+  abstract flush(): void;
+  abstract enqueue(task: Task): Promise<string>;
 }

@@ -3,10 +3,14 @@
   "version": "0.0.1",
   "scripts": {
     "lint": "tslint **/*.ts",
-    "test": "mocha test/"
+    "test": "mocha test/",
+    "start-redis": "docker run -d -p 6060:6379 redis"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.0.2"
+  },
+  "dependencies": {
+    "redis": "^2.6.2"
   }
 }

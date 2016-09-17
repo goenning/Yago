@@ -2,6 +2,7 @@ import { InProcessTaskQueue } from "../src/InProcessTaskQueue";
 import { RedisTaskQueue } from "../src/RedisTaskQueue";
 import { TaskQueue } from "../src/TaskQueue";
 import { expect } from "chai";
+import { Task } from "../src/Task";
 
 interface TestItem {
   name: string;
@@ -10,7 +11,7 @@ interface TestItem {
 
 const items: TestItem[] = [
   { name: "InProcessTaskQueue", newQueue: () => new InProcessTaskQueue() },
-  { name: "RedisQueue", newQueue: () => new RedisTaskQueue() }
+  { name: "RedisQueue", newQueue: () => new RedisTaskQueue("redis://localhost:6060") }
 ];
 
 items.forEach((item) => {
@@ -18,11 +19,18 @@ items.forEach((item) => {
     let queue: TaskQueue;
     beforeEach(() => {
       queue = item.newQueue();
+      queue.flush();
     });
 
-    it("should start empty", () => {
-      const queue = new InProcessTaskQueue();
-      expect(queue.count()).be.eq(0);
+    it("should start empty", async () => {
+      const count = await queue.count();
+      expect(count).be.eq(0);
+    });
+
+    it("should have 1 item after enqueue", async () => {
+      await queue.enqueue(new Task());
+      const count = await queue.count();
+      expect(count).be.eq(1);
     });
   });
 });
