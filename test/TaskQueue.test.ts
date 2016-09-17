@@ -28,7 +28,7 @@ items.forEach((item) => {
     });
 
     it("should have 1 item after enqueue", async () => {
-      await queue.enqueue(new Task());
+      await queue.enqueue(new Task("hello-world"));
       const count = await queue.count();
       expect(count).be.eq(1);
     });
