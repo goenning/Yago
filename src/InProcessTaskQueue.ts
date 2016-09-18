@@ -13,8 +13,17 @@ export class InProcessTaskQueue extends TaskQueue {
   }
 
   async enqueue(task: Task): Promise<string> {
+    const uuid = "SOME_ID";
+
+    for (let i = 0; i < this.queue.length; i++) {
+      if (this.queue[i].getScore() > task.getScore()) {
+        this.queue.splice(i, 0, task);
+        return uuid;
+      }
+    }
+
     this.queue.push(task);
-    return "SOME_ID";
+    return uuid;
   }
 
   async dequeue(): Promise<Task> {

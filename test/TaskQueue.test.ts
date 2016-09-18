@@ -40,11 +40,25 @@ items.forEach((item) => {
       expect(anotherTask).deep.eq(task);
     });
 
-    it("should only dequeue if it's ready to be processed'", async () => {
+    it("should only dequeue if it's ready to be processed", async () => {
       const task = new Task("hello-world", { startAt: new Date(2050, 1, 1, 1, 1, 1) });
       await queue.enqueue(task);
       const anotherTask = await queue.dequeue();
       expect(anotherTask).be.eq(null);
+    });
+
+    it("should enqueue in order", async () => {
+      const firstEnqueued = new Task("hello-world", { startAt: new Date(2012, 1, 1, 1, 1, 1) });
+      const secondEnqueued = new Task("hello-world", { startAt: new Date(2010, 1, 1, 1, 1, 1) });
+
+      await queue.enqueue(firstEnqueued);
+      await queue.enqueue(secondEnqueued);
+
+      const firstDequeued = await queue.dequeue();
+      const secondDequeued = await queue.dequeue();
+
+      expect(firstDequeued).deep.eq(secondEnqueued);
+      expect(secondDequeued).deep.eq(firstEnqueued);
     });
   });
 });
