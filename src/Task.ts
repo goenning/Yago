@@ -6,7 +6,7 @@ export interface TaskOptions {
 export class Task {
   private name: string;
   private priority: TaskPriority;
-  private startAt: Date;
+  public startAt: Date;
 
   constructor(name: string, options?: TaskOptions) {
     this.name = name;

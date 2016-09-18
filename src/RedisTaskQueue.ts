@@ -40,6 +40,10 @@ export class RedisTaskQueue extends TaskQueue {
       if (!item)
         return null;
 
+      const task = Task.fromJson(item);
+      if (task.startAt && task.startAt > new Date())
+        return null;
+
       count = await this.remove(item);
     } while (count === 0);
 

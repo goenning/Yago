@@ -37,7 +37,14 @@ items.forEach((item) => {
       const task = new Task("hello-world");
       await queue.enqueue(task);
       const anotherTask = await queue.dequeue();
-      expect(task).deep.eq(anotherTask);
+      expect(anotherTask).deep.eq(task);
+    });
+
+    it("should only dequeue if it's ready to be processed'", async () => {
+      const task = new Task("hello-world", { startAt: new Date(2050, 1, 1, 1, 1, 1) });
+      await queue.enqueue(task);
+      const anotherTask = await queue.dequeue();
+      expect(anotherTask).be.eq(null);
     });
   });
 });
