@@ -32,5 +32,12 @@ items.forEach((item) => {
       const count = await queue.count();
       expect(count).be.eq(1);
     });
+
+    it("should have the same task after enqueue/dequeue", async () => {
+      const task = new Task("hello-world");
+      await queue.enqueue(task);
+      const anotherTask = await queue.dequeue();
+      expect(task).deep.eq(anotherTask);
+    });
   });
 });

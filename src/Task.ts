@@ -27,6 +27,14 @@ export class Task {
       startAt: this.startAt
     });
   }
+
+  static fromJson(input: string) {
+    const json = JSON.parse(input);
+    return new Task(json.name, {
+      priority: json.priority,
+      startAt: json.startAt ? new Date(json.startAt) : null
+    });
+  }
 }
 
 export enum TaskPriority {

@@ -48,6 +48,10 @@ describe("Task", () => {
     it(`${item.name} should convert to json ${item.json}`, () => {
       expect(item.task.toJson()).be.eq(item.json);
     });
+
+    it(`${item.json} should be parsed to same task as ${item.name}`, () => {
+      expect(Task.fromJson(item.json)).deep.equal(item.task);
+    });
   });
 
   it("assignmentReminderTask should have lower score than processDailySalesTask", () => {

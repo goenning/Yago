@@ -17,6 +17,10 @@ export class InProcessTaskQueue extends TaskQueue {
     return Promise.resolve("SOME_ID");
   }
 
+  dequeue(): Promise<Task> {
+    return Promise.resolve(this.queue.shift());
+  }
+
   flush(): void {
 
   }
