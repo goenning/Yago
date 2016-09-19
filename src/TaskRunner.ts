@@ -1,5 +1,11 @@
 import { Task } from "./Task";
 
+export function Task(taskName: string) {
+    return function (target: ITaskRunnerClass) {
+       target.taskName = taskName;
+    };
+}
+
 export class ExecutionResult {
   constructor(public outcome: ExecutionResultOutcome) {
   }
@@ -8,6 +14,11 @@ export class ExecutionResult {
 export class ExecutionContext {
   constructor(public task: Task, public output: NodeJS.WritableStream) {
   }
+}
+
+export interface ITaskRunnerClass {
+  new (): TaskRunner;
+  taskName?: string;
 }
 
 export enum ExecutionResultOutcome {

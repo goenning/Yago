@@ -75,9 +75,20 @@ describe("Yago", () => {
 
     let count = 0;
     yago.on("processed", (task: Task, result: ExecutionResult) => {
-      if (task && result.outcome === ExecutionResultOutcome.Success) {
-        done();
-      }
+      expect(result.outcome).to.be.eq(ExecutionResultOutcome.Success);
+      done();
+    });
+
+    yago.start();
+  });
+
+  it("should emit ignored event for unknown task", (done) => {
+    yago.enqueue("send-email");
+
+    let count = 0;
+    yago.on("ignored", (task: Task) => {
+      expect(task.name).to.be.eq("send-email");
+      done();
     });
 
     yago.start();

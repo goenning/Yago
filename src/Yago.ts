@@ -1,12 +1,8 @@
-import { TaskRunner, ExecutionContext, ExecutionResult } from "./TaskRunner";
+import { TaskRunner, ITaskRunnerClass, ExecutionContext, ExecutionResult } from "./TaskRunner";
 import { TaskQueue } from "./TaskQueue";
 import { Task, TaskOptions } from "./Task";
 import { InProcessTaskQueue } from "./InProcessTaskQueue";
 import { EventEmitter } from "events";
-
-interface ITaskRunnerClass {
-  new (): TaskRunner;
-}
 
 export interface YagoOptions {
   queue?: TaskQueue;
@@ -18,18 +14,19 @@ export class Yago extends EventEmitter {
   private queue: TaskQueue;
   private timer: NodeJS.Timer;
   private output: NodeJS.WritableStream;
-  private taskRunnerClass: ITaskRunnerClass;
+  private runners: { [key: string]: ITaskRunnerClass };
   private interval: number;
 
   constructor(options?: YagoOptions) {
     super();
+    this.runners = {};
     this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
     this.output = options && options.output ? options.output : process.stdout;
     this.interval = options && options.interval ? options.interval : 1000;
   }
 
-  register(taskRunnerClass: ITaskRunnerClass): void {
-    this.taskRunnerClass = taskRunnerClass;
+  register(runner: ITaskRunnerClass): void {
+    this.runners[runner.taskName] = runner;
   }
 
   enqueue(taskName: string, options?: TaskOptions): Promise<Task> {
@@ -49,12 +46,17 @@ export class Yago extends EventEmitter {
   private async processQueue(): Promise<ExecutionResult> {
     const task = await this.queue.dequeue();
     if (task) {
-      const ctx = new ExecutionContext(task, this.output);
-      const runner = new this.taskRunnerClass();
-      this.emit("process", task);
-      const result = await runner.execute(ctx);
-      this.emit("processed", task, result);
-      return result;
+      if (this.runners[task.name]) {
+        const ctx = new ExecutionContext(task, this.output);
+        const runner = new this.runners[task.name]();
+
+        this.emit("process", task);
+        const result = await runner.execute(ctx);
+        this.emit("processed", task, result);
+        return result;
+      } else {
+        this.emit("ignored", task);
+      }
     }
   }
 }
