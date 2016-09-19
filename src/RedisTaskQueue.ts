@@ -32,23 +32,23 @@ export class RedisTaskQueue extends TaskQueue {
   }
 
   async dequeue(): Promise<Task> {
-    let item: string = null;
-    let count: number = null;
+    let item: string;
+    let count: number;
 
     do {
       item = await this.first();
       if (!item)
-        return null;
+        return undefined;
 
       const task = Task.fromJson(item);
       if (task.startAt && task.startAt > new Date())
-        return null;
+        return undefined;
 
       count = await this.remove(item);
     } while (count === 0);
 
 
-    return item ? Task.fromJson(item) : null;
+    return item ? Task.fromJson(item) : undefined;
   }
 
   flush(): void {
@@ -61,7 +61,7 @@ export class RedisTaskQueue extends TaskQueue {
         if (list && list.length > 0)
           resolve(list[0]);
 
-        resolve(null);
+        resolve(undefined);
       });
     });
   }

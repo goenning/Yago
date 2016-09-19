@@ -26,8 +26,8 @@ export class InProcessTaskQueue extends TaskQueue {
 
   async dequeue(): Promise<Task> {
     const task = this.queue.shift();
-    if (task.startAt && task.startAt > new Date())
-      return null;
+    if (task && task.startAt && task.startAt > new Date())
+      return undefined;
     return task;
   }
 

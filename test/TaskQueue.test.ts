@@ -24,27 +24,32 @@ items.forEach((item) => {
 
     it("should start empty", async () => {
       const count = await queue.count();
-      expect(count).be.eq(0);
+      expect(count).to.be.eq(0);
+    });
+
+    it("should not be able to dequeue an queue", async () => {
+      const task = await queue.dequeue();
+      expect(task).to.be.undefined;
     });
 
     it("should have 1 item after enqueue", async () => {
       await queue.enqueue(new Task("hello-world"));
       const count = await queue.count();
-      expect(count).be.eq(1);
+      expect(count).to.be.eq(1);
     });
 
     it("should have the same task after enqueue/dequeue", async () => {
       const task = new Task("hello-world");
       await queue.enqueue(task);
       const anotherTask = await queue.dequeue();
-      expect(anotherTask).deep.eq(task);
+      expect(anotherTask).to.deep.eq(task);
     });
 
     it("should only dequeue if it's ready to be processed", async () => {
       const task = new Task("hello-world", { startAt: new Date(2050, 1, 1, 1, 1, 1) });
       await queue.enqueue(task);
       const anotherTask = await queue.dequeue();
-      expect(anotherTask).be.eq(null);
+      expect(anotherTask).to.be.undefined;
     });
 
     it("should enqueue in order", async () => {
@@ -60,9 +65,9 @@ items.forEach((item) => {
       const secondDequeued = await queue.dequeue();
       const thirdDequeued = await queue.dequeue();
 
-      expect(firstDequeued).deep.eq(secondEnqueued);
-      expect(secondDequeued).deep.eq(thirdEnqueued);
-      expect(thirdDequeued).deep.eq(firstEnqueued);
+      expect(firstDequeued).to.deep.eq(secondEnqueued);
+      expect(secondDequeued).to.deep.eq(thirdEnqueued);
+      expect(thirdDequeued).to.deep.eq(firstEnqueued);
     });
   });
 });

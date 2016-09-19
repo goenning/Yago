@@ -46,24 +46,24 @@ const all = [
 describe("Task", () => {
   all.forEach((item) => {
     it(`${item.name} should have a valid UUID v4`, () => {
-      expect(item.task.id.length).be.eq(36);
-      expect(item.task.id[14]).be.eq("4");
+      expect(item.task.id.length).to.be.eq(36);
+      expect(item.task.id[14]).to.be.eq("4");
     });
 
     it(`${item.name} should have a score of ${item.score}`, () => {
-      expect(item.task.getScore()).be.eq(item.score);
+      expect(item.task.getScore()).to.be.eq(item.score);
     });
 
     it(`${item.name} should convert to json ${item.json}`, () => {
-      expect(item.task.toJson()).be.eq(item.json);
+      expect(item.task.toJson()).to.be.eq(item.json);
     });
 
     it(`${item.json} should be parsed to same task as ${item.name}`, () => {
-      expect(Task.fromJson(item.json)).deep.equal(item.task);
+      expect(Task.fromJson(item.json)).to.deep.equal(item.task);
     });
   });
 
   it("assignmentReminderTask should have lower score than processDailySalesTask", () => {
-    expect(assignmentReminderTask.getScore()).be.below(processDailySalesTask.getScore());
+    expect(assignmentReminderTask.getScore()).to.be.below(processDailySalesTask.getScore());
   });
 });

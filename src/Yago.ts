@@ -1,4 +1,4 @@
-import { TaskRunner, ExecutionContext } from "./TaskRunner";
+import { TaskRunner, ExecutionContext, ExecutionResult } from "./TaskRunner";
 import { TaskQueue } from "./TaskQueue";
 import { Task, TaskOptions } from "./Task";
 import { InProcessTaskQueue } from "./InProcessTaskQueue";
@@ -7,15 +7,23 @@ interface ITaskRunnerClass {
   new (): TaskRunner;
 }
 
+export interface YagoOptions {
+  queue?: TaskQueue;
+  interval?: number;
+  output?: NodeJS.WritableStream;
+}
+
 export class Yago {
   private queue: TaskQueue;
   private timer: NodeJS.Timer;
   private output: NodeJS.WritableStream;
   private taskRunnerClass: ITaskRunnerClass;
+  private interval: number;
 
-  constructor(output: NodeJS.WritableStream) {
-    this.queue = new InProcessTaskQueue();
-    this.output = output;
+  constructor(options?: YagoOptions) {
+    this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
+    this.output = options && options.output ? options.output : process.stdout;
+    this.interval = options && options.interval ? options.interval : 1000;
   }
 
   register(taskRunnerClass: ITaskRunnerClass): void {
@@ -29,20 +37,19 @@ export class Yago {
   start(): void {
     this.timer = setInterval(() => {
       this.processQueue();
-    }, 100);
+    }, 5);
   }
 
   stop(): void {
     clearInterval(this.timer);
   }
 
-  private async processQueue(): Promise<Task> {
+  private async processQueue(): Promise<ExecutionResult> {
     const task = await this.queue.dequeue();
     if (task) {
       const ctx = new ExecutionContext(task, this.output);
       const runner = new this.taskRunnerClass();
-      await runner.execute(ctx);
-      return task;
+      return await runner.execute(ctx);
     }
   }
 }
