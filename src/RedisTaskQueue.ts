@@ -11,12 +11,12 @@ export class RedisTaskQueue extends TaskQueue {
     this.client = redis.createClient(connString);
   }
 
-  enqueue(task: Task): Promise<string> {
+  enqueue(task: Task): Promise<Task> {
     return new Promise((resolve, reject) => {
       this.client.zadd(this.key, task.getScore(), task.toJson(), (err, count) => {
         if (err)
           reject(err);
-        resolve("SOME_ID");
+        resolve(task);
       });
     });
   }

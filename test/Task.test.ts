@@ -17,30 +17,35 @@ const all = [
     name: "helloWorldTask",
     task: helloWorldTask,
     score: 3,
-    json: "{\"name\":\"hello-world\",\"priority\":3,\"startAt\":null}"
+    json: `{\"id\":\"${helloWorldTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null}`
   },
   {
     name: "welcomeMessageTask",
     task: welcomeMessageTask,
     score: 1,
-    json: "{\"name\":\"welcome-message\",\"priority\":1,\"startAt\":null}"
+    json: `{\"id\":\"${welcomeMessageTask.id}\",\"name\":\"welcome-message\",\"priority\":1,\"startAt\":null}`
   },
   {
     name: "assignmentReminderTask",
     task: assignmentReminderTask,
     score: 1484061012001,
-    json: "{\"name\":\"assignment-reminder\",\"priority\":1,\"startAt\":\"2017-01-10T15:10:12.000Z\"}"
+    json: `{\"id\":\"${assignmentReminderTask.id}\",\"name\":\"assignment-reminder\",\"priority\":1,\"startAt\":\"2017-01-10T15:10:12.000Z\"}`
   },
   {
     name: "processDailySalesTask",
     task: processDailySalesTask,
     score: 1484061012005,
-    json: "{\"name\":\"process-daily-sales\",\"priority\":5,\"startAt\":\"2017-01-10T15:10:12.000Z\"}"
+    json: `{\"id\":\"${processDailySalesTask.id}\",\"name\":\"process-daily-sales\",\"priority\":5,\"startAt\":\"2017-01-10T15:10:12.000Z\"}`
   }
 ];
 
 describe("Task", () => {
   all.forEach((item) => {
+    it(`${item.name} should have a valid UUID v4`, () => {
+      expect(item.task.id.length).be.eq(36);
+      expect(item.task.id[14]).be.eq("4");
+    });
+
     it(`${item.name} should have a score of ${item.score}`, () => {
       expect(item.task.getScore()).be.eq(item.score);
     });

@@ -2,6 +2,11 @@
   "name": "yago",
   "dependencies": {
     "chai": "registry:npm/chai#3.5.0+20160723033700",
+    "node-uuid": "registry:npm/node-uuid#1.4.7+20160723033700",
     "redis": "registry:npm/redis#2.6.0+20160901110043"
+  },
+  "globalDependencies": {
+    "mocha": "registry:env/mocha#2.2.5+20160723033700",
+    "node": "registry:env/node#6.0.0+20160918225031"
   }
 }

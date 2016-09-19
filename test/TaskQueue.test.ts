@@ -11,7 +11,7 @@ interface TestItem {
 
 const items: TestItem[] = [
   { name: "InProcessTaskQueue", newQueue: () => new InProcessTaskQueue() },
-  { name: "RedisQueue", newQueue: () => new RedisTaskQueue("redis://localhost:6060") }
+  //{ name: "RedisQueue", newQueue: () => new RedisTaskQueue("redis://localhost:6060") }
 ];
 
 items.forEach((item) => {
@@ -49,16 +49,20 @@ items.forEach((item) => {
 
     it("should enqueue in order", async () => {
       const firstEnqueued = new Task("hello-world", { startAt: new Date(2012, 1, 1, 1, 1, 1) });
-      const secondEnqueued = new Task("hello-world", { startAt: new Date(2010, 1, 1, 1, 1, 1) });
+      const secondEnqueued = new Task("hello-world");
+      const thirdEnqueued = new Task("hello-world", { startAt: new Date(2010, 1, 1, 1, 1, 1) });
 
       await queue.enqueue(firstEnqueued);
       await queue.enqueue(secondEnqueued);
+      await queue.enqueue(thirdEnqueued);
 
       const firstDequeued = await queue.dequeue();
       const secondDequeued = await queue.dequeue();
+      const thirdDequeued = await queue.dequeue();
 
       expect(firstDequeued).deep.eq(secondEnqueued);
-      expect(secondDequeued).deep.eq(firstEnqueued);
+      expect(secondDequeued).deep.eq(thirdEnqueued);
+      expect(thirdDequeued).deep.eq(firstEnqueued);
     });
   });
 });
