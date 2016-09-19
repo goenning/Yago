@@ -3,6 +3,7 @@ import { v4 } from "node-uuid";
 export interface TaskOptions {
   priority?: TaskPriority;
   startAt?: Date;
+  payload?: any;
 }
 
 export class Task {
@@ -10,12 +11,14 @@ export class Task {
   public priority: TaskPriority;
   public id: string;
   public startAt: Date;
+  public payload: any;
 
   constructor(name: string, options?: TaskOptions) {
     this.id = v4();
     this.name = name;
     this.priority = options && options.priority ? options.priority : TaskPriority.Normal;
     this.startAt = options && options.startAt ? options.startAt : null;
+    this.payload = options && options.payload ? options.payload : null;
   }
 
   getScore(): number {
@@ -29,7 +32,8 @@ export class Task {
       id: this.id,
       name: this.name,
       priority: this.priority,
-      startAt: this.startAt
+      startAt: this.startAt,
+      payload: this.payload
     });
   }
 
@@ -37,7 +41,8 @@ export class Task {
     const json = JSON.parse(input);
     const task = new Task(json.name, {
       priority: json.priority,
-      startAt: json.startAt ? new Date(json.startAt) : null
+      startAt: json.startAt ? new Date(json.startAt) : null,
+      payload: json.payload
     });
     task.id = json.id;
     return task;

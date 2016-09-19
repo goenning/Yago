@@ -5,7 +5,11 @@ const helloWorldTask = new Task("hello-world");
 const welcomeMessageTask = new Task("welcome-message", { priority: TaskPriority.VeryHigh });
 const assignmentReminderTask = new Task("assignment-reminder", {
   startAt: new Date(2016, 12, 10, 13, 10, 12),
-  priority: TaskPriority.VeryHigh
+  priority: TaskPriority.VeryHigh,
+  payload: {
+    with: "CEO",
+    where: "Blue Meeting Room"
+  }
 });
 const processDailySalesTask = new Task("process-daily-sales", {
   startAt: new Date(2016, 12, 10, 13, 10, 12),
@@ -17,25 +21,25 @@ const all = [
     name: "helloWorldTask",
     task: helloWorldTask,
     score: 3,
-    json: `{\"id\":\"${helloWorldTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null}`
+    json: `{\"id\":\"${helloWorldTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null,"payload":null}`
   },
   {
     name: "welcomeMessageTask",
     task: welcomeMessageTask,
     score: 1,
-    json: `{\"id\":\"${welcomeMessageTask.id}\",\"name\":\"welcome-message\",\"priority\":1,\"startAt\":null}`
+    json: `{\"id\":\"${welcomeMessageTask.id}\",\"name\":\"welcome-message\",\"priority\":1,\"startAt\":null,"payload":null}`
   },
   {
     name: "assignmentReminderTask",
     task: assignmentReminderTask,
     score: 1484061012001,
-    json: `{\"id\":\"${assignmentReminderTask.id}\",\"name\":\"assignment-reminder\",\"priority\":1,\"startAt\":\"2017-01-10T15:10:12.000Z\"}`
+    json: `{\"id\":\"${assignmentReminderTask.id}\",\"name\":\"assignment-reminder\",\"priority\":1,\"startAt\":\"2017-01-10T15:10:12.000Z\",\"payload\":{\"with"\:\"CEO\",\"where\":\"Blue Meeting Room\"}}`
   },
   {
     name: "processDailySalesTask",
     task: processDailySalesTask,
     score: 1484061012005,
-    json: `{\"id\":\"${processDailySalesTask.id}\",\"name\":\"process-daily-sales\",\"priority\":5,\"startAt\":\"2017-01-10T15:10:12.000Z\"}`
+    json: `{\"id\":\"${processDailySalesTask.id}\",\"name\":\"process-daily-sales\",\"priority\":5,\"startAt\":\"2017-01-10T15:10:12.000Z\","payload":null}`
   }
 ];
 

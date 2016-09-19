@@ -1,11 +1,14 @@
+import { Task } from "./Task";
+
 export class ExecutionResult {
 
 }
 
 export class ExecutionContext {
-  output: NodeJS.WritableStream;
+  constructor(public task: Task, public output: NodeJS.WritableStream) {
+  }
 }
 
 export abstract class TaskRunner {
-  abstract execute(ctx: ExecutionContext): ExecutionResult;
+  abstract execute(ctx: ExecutionContext): Promise<ExecutionResult>;
 }
