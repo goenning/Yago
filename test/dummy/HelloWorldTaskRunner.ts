@@ -1,4 +1,4 @@
-import { TaskRunner, ExecutionContext, ExecutionResult } from "../../src/TaskRunner";
+import { TaskRunner, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "../../src/TaskRunner";
 
 export class HelloWorldTaskRunner extends TaskRunner {
   async execute(ctx: ExecutionContext): Promise<ExecutionResult> {
@@ -6,6 +6,6 @@ export class HelloWorldTaskRunner extends TaskRunner {
       ctx.output.write(`Hello World: ${ctx.task.payload}`);
     else
       ctx.output.write("Hello World");
-    return null;
+    return this.success();
   }
 }

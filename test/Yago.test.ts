@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { Task } from "../src/Task";
 import { Yago } from "../src/Yago";
+import { ExecutionResult, ExecutionResultOutcome } from "../src/TaskRunner";
 import { HelloWorldTaskRunner } from "./dummy/HelloWorldTaskRunner";
 import { Writable, WritableOptions } from "stream";
 
@@ -54,7 +55,7 @@ describe("Yago", () => {
     yago.start();
   });
 
-  it("should process two tasks", (done) => {
+  it("should emit process event for both tasks", (done) => {
     yago.enqueue("hello-world");
     yago.enqueue("hello-world");
 
@@ -62,6 +63,19 @@ describe("Yago", () => {
     yago.on("process", (task) => {
       count++;
       if (count === 2) {
+        done();
+      }
+    });
+
+    yago.start();
+  });
+
+  it("should emit processed event", (done) => {
+    yago.enqueue("hello-world");
+
+    let count = 0;
+    yago.on("processed", (task: Task, result: ExecutionResult) => {
+      if (task && result.outcome === ExecutionResultOutcome.Success) {
         done();
       }
     });

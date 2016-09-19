@@ -52,7 +52,9 @@ export class Yago extends EventEmitter {
       const ctx = new ExecutionContext(task, this.output);
       const runner = new this.taskRunnerClass();
       this.emit("process", task);
-      return await runner.execute(ctx);
+      const result = await runner.execute(ctx);
+      this.emit("processed", task, result);
+      return result;
     }
   }
 }
