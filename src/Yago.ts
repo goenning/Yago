@@ -2,6 +2,7 @@ import { TaskRunner, ExecutionContext, ExecutionResult } from "./TaskRunner";
 import { TaskQueue } from "./TaskQueue";
 import { Task, TaskOptions } from "./Task";
 import { InProcessTaskQueue } from "./InProcessTaskQueue";
+import { EventEmitter } from "events";
 
 interface ITaskRunnerClass {
   new (): TaskRunner;
@@ -13,7 +14,7 @@ export interface YagoOptions {
   output?: NodeJS.WritableStream;
 }
 
-export class Yago {
+export class Yago extends EventEmitter {
   private queue: TaskQueue;
   private timer: NodeJS.Timer;
   private output: NodeJS.WritableStream;
@@ -21,6 +22,7 @@ export class Yago {
   private interval: number;
 
   constructor(options?: YagoOptions) {
+    super();
     this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
     this.output = options && options.output ? options.output : process.stdout;
     this.interval = options && options.interval ? options.interval : 1000;
@@ -49,6 +51,7 @@ export class Yago {
     if (task) {
       const ctx = new ExecutionContext(task, this.output);
       const runner = new this.taskRunnerClass();
+      this.emit("process", task);
       return await runner.execute(ctx);
     }
   }

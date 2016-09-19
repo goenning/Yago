@@ -59,7 +59,7 @@ describe("Yago", () => {
     yago.enqueue("hello-world");
 
     let count = 0;
-    output.on("data", (data) => {
+    yago.on("process", (task) => {
       count++;
       if (count === 2) {
         done();
