@@ -11,9 +11,7 @@ class GreeterTaskRunner implements TaskRunner {
 
 const yago = new Yago();
 yago.register(GreeterTaskRunner);
-yago.schedule("* * * * * *", "greet", { 
-  payload: () => {
-    return "Yago";
-  } 
+yago.schedule("* * * * * *", "greet", () => {
+  return { payload: "Yago" };
 });
 yago.start();

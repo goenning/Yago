@@ -3,9 +3,9 @@ import { expect } from "chai";
 
 const helloWorldTask = new Task("hello-world");
 const helloWorldTypeScriptTask = new Task("hello-world", () => {
-  return { 
-    payload: "TypeScript" 
-  }
+  return {
+    payload: "TypeScript"
+  };
 });
 const welcomeMessageTask = new Task("welcome-message", { priority: TaskPriority.VeryHigh });
 const assignmentReminderTask = new Task("assignment-reminder", {
@@ -20,7 +20,7 @@ const processDailySalesTask = new Task("process-daily-sales", () => {
   return {
     startAt: new Date(2016, 12, 10, 13, 10, 12),
     priority: TaskPriority.VeryLow
-  }
+  };
 });
 
 const all = [

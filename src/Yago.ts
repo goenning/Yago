@@ -33,7 +33,7 @@ export class Yago extends EventEmitter {
   schedule(cron: string, taskName: string, options?: TaskOptions): void {
     new CronJob(cron, () => {
       this.enqueue(taskName, options);
-    }, null, true)
+    }, null, true);
   }
 
   enqueue(taskName: string, options?: TaskOptions): Promise<Task> {

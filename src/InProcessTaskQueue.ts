@@ -8,27 +8,27 @@ export class InProcessTaskQueue extends TaskQueue {
     super();
   }
 
-  async count(): Promise<number> {
-    return this.queue.length;
+  count(): Promise<number> {
+    return Promise.resolve(this.queue.length);
   }
 
-  async enqueue(task: Task): Promise<Task> {
+  enqueue(task: Task): Promise<Task> {
     for (let i = 0; i < this.queue.length; i++) {
       if (this.queue[i].getScore() > task.getScore()) {
         this.queue.splice(i, 0, task);
-        return task;
+        return Promise.resolve(task);
       }
     }
 
     this.queue.push(task);
-    return task;
+    return Promise.resolve(task);
   }
 
-  async dequeue(): Promise<Task> {
+  dequeue(): Promise<Task> {
     const task = this.queue.shift();
     if (task && task.startAt && task.startAt > new Date())
       return undefined;
-    return task;
+    return Promise.resolve(task);
   }
 
   flush(): void {

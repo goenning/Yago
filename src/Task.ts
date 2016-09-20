@@ -14,10 +14,6 @@ export enum TaskPriority {
     VeryLow = 5
 }
 
-function isFunction(obj) {
-  return !!(obj && obj.constructor && obj.call && obj.apply);
-};
-
 export class Task {
   public name: string;
   public priority: TaskPriority;
