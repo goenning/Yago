@@ -2,6 +2,11 @@ import { Task, TaskPriority } from "../src/Task";
 import { expect } from "chai";
 
 const helloWorldTask = new Task("hello-world");
+const helloWorldTypeScriptTask = new Task("hello-world", {
+  payload: () => {
+    return "TypeScript";
+  }
+});
 const welcomeMessageTask = new Task("welcome-message", { priority: TaskPriority.VeryHigh });
 const assignmentReminderTask = new Task("assignment-reminder", {
   startAt: new Date(2016, 12, 10, 13, 10, 12),
@@ -22,6 +27,12 @@ const all = [
     task: helloWorldTask,
     score: 3,
     json: `{\"id\":\"${helloWorldTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null,"payload":null}`
+  },
+  {
+    name: "helloWorldTypeScriptTask",
+    task: helloWorldTypeScriptTask,
+    score: 3,
+    json: `{\"id\":\"${helloWorldTypeScriptTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null,"payload":\"TypeScript\"}`
   },
   {
     name: "welcomeMessageTask",

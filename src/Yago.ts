@@ -3,6 +3,7 @@ import { TaskQueue } from "./TaskQueue";
 import { Task, TaskOptions } from "./Task";
 import { InProcessTaskQueue } from "./InProcessTaskQueue";
 import { EventEmitter } from "events";
+import { CronJob } from "cron";
 
 export interface YagoOptions {
   queue?: TaskQueue;
@@ -29,8 +30,16 @@ export class Yago extends EventEmitter {
     this.runners[runner.taskName] = runner;
   }
 
+  schedule(cron: string, taskName: string, options?: TaskOptions): void {
+    new CronJob(cron, () => {
+      this.enqueue(taskName, options);
+    }, null, true)
+  }
+
   enqueue(taskName: string, options?: TaskOptions): Promise<Task> {
-    return this.queue.enqueue(new Task(taskName, options));
+    const task = new Task(taskName, options);
+    this.emit("enqueue", task);
+    return this.queue.enqueue(task);
   }
 
   start(): void {

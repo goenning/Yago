@@ -6,6 +6,18 @@ export interface TaskOptions {
   payload?: any;
 }
 
+export enum TaskPriority {
+    VeryHigh = 1,
+    High = 2,
+    Normal = 3,
+    Low = 4,
+    VeryLow = 5
+}
+
+function isFunction(obj) {
+  return !!(obj && obj.constructor && obj.call && obj.apply);
+};
+
 export class Task {
   public name: string;
   public priority: TaskPriority;
@@ -19,6 +31,10 @@ export class Task {
     this.priority = options && options.priority ? options.priority : TaskPriority.Normal;
     this.startAt = options && options.startAt ? options.startAt : null;
     this.payload = options && options.payload ? options.payload : null;
+
+    if (isFunction(this.payload)) {
+      this.payload = this.payload();
+    }
   }
 
   getScore(): number {
@@ -47,12 +63,4 @@ export class Task {
     task.id = json.id;
     return task;
   }
-}
-
-export enum TaskPriority {
-    VeryHigh = 1,
-    High = 2,
-    Normal = 3,
-    Low = 4,
-    VeryLow = 5
 }

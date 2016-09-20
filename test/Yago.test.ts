@@ -3,18 +3,7 @@ import { Task } from "../src/Task";
 import { Yago } from "../src/Yago";
 import { ExecutionResult, ExecutionResultOutcome } from "../src/TaskRunner";
 import { HelloWorldTaskRunner } from "./dummy/HelloWorldTaskRunner";
-import { Writable, WritableOptions } from "stream";
-
-class MemoryStream extends Writable {
-  constructor(opts?: WritableOptions) {
-    super(opts);
-  }
-
-  _write(chunk: any, encoding: string, callback: Function): void {
-    this.emit("data", chunk.toString("UTF-8"));
-    callback();
-  }
-}
+import { MemoryStream } from "./helper/MemoryStream";
 
 describe("Yago", () => {
   let yago: Yago;

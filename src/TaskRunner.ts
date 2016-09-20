@@ -1,6 +1,6 @@
 import { Task } from "./Task";
 
-export function Task(taskName: string) {
+export function RunTask(taskName: string) {
     return function (target: ITaskRunnerClass) {
        target.taskName = taskName;
     };
@@ -27,9 +27,6 @@ export enum ExecutionResultOutcome {
   Failure = 2
 }
 
-export abstract class TaskRunner {
-  abstract execute(ctx: ExecutionContext): Promise<ExecutionResult>;
-  success(): ExecutionResult {
-    return new ExecutionResult(ExecutionResultOutcome.Success);
-  }
+export interface TaskRunner {
+  execute(ctx: ExecutionContext): Promise<ExecutionResult>;
 }
