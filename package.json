@@ -1,6 +1,7 @@
 {
   "name": "yago",
   "version": "0.0.1",
+  "homepage": "https://github.com/goenning/yago",
   "scripts": {
     "lint": "tslint **/*.ts",
     "build": "tsc",
@@ -22,5 +23,8 @@
     "cron": "^1.1.0",
     "node-uuid": "^1.4.7",
     "redis": "^2.6.2"
-  }
+  },
+  "engines" : { 
+    "node": ">=4" 
+  } 
 }
