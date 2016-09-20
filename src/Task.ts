@@ -25,16 +25,15 @@ export class Task {
   public startAt: Date;
   public payload: any;
 
-  constructor(name: string, options?: TaskOptions) {
+  constructor(name: string, options?: TaskOptions | (() => TaskOptions)) {
+
     this.id = v4();
     this.name = name;
-    this.priority = options && options.priority ? options.priority : TaskPriority.Normal;
-    this.startAt = options && options.startAt ? options.startAt : null;
-    this.payload = options && options.payload ? options.payload : null;
+    let opt: TaskOptions = (typeof options === "function" ? options() : options) || { };
 
-    if (isFunction(this.payload)) {
-      this.payload = this.payload();
-    }
+    this.priority = opt.priority ? opt.priority : TaskPriority.Normal;
+    this.startAt = opt.startAt ? opt.startAt : null;
+    this.payload = opt.payload ? opt.payload : null;
   }
 
   getScore(): number {

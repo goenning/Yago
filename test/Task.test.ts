@@ -2,9 +2,9 @@ import { Task, TaskPriority } from "../src/Task";
 import { expect } from "chai";
 
 const helloWorldTask = new Task("hello-world");
-const helloWorldTypeScriptTask = new Task("hello-world", {
-  payload: () => {
-    return "TypeScript";
+const helloWorldTypeScriptTask = new Task("hello-world", () => {
+  return { 
+    payload: "TypeScript" 
   }
 });
 const welcomeMessageTask = new Task("welcome-message", { priority: TaskPriority.VeryHigh });
@@ -16,9 +16,11 @@ const assignmentReminderTask = new Task("assignment-reminder", {
     where: "Blue Meeting Room"
   }
 });
-const processDailySalesTask = new Task("process-daily-sales", {
-  startAt: new Date(2016, 12, 10, 13, 10, 12),
-  priority: TaskPriority.VeryLow
+const processDailySalesTask = new Task("process-daily-sales", () => {
+  return {
+    startAt: new Date(2016, 12, 10, 13, 10, 12),
+    priority: TaskPriority.VeryLow
+  }
 });
 
 const all = [

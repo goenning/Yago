@@ -1,6 +1,5 @@
 import { RunTask, TaskRunner, ITaskRunnerClass, ExecutionResult, ExecutionResultOutcome, ExecutionContext } from "../../src/TaskRunner";
 
-
 @RunTask("hello-world")
 export class HelloWorldTaskRunner implements TaskRunner {
   async execute(ctx: ExecutionContext) {
