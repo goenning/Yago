@@ -11,6 +11,8 @@ services:
 
 before_script:
   - npm run build
+  - npm install typings -g
+  - typings install
   - npm run start-redis
   - npm run lint
   - sleep 3
