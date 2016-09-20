@@ -9,7 +9,7 @@ const helloWorldTypeScriptTask = new Task("hello-world", () => {
 });
 const welcomeMessageTask = new Task("welcome-message", { priority: TaskPriority.VeryHigh });
 const assignmentReminderTask = new Task("assignment-reminder", {
-  startAt: new Date(2016, 12, 10, 13, 10, 12),
+  startAt: new Date(Date.UTC(2016, 12, 10, 15, 10, 12)),
   priority: TaskPriority.VeryHigh,
   payload: {
     with: "CEO",
@@ -18,7 +18,7 @@ const assignmentReminderTask = new Task("assignment-reminder", {
 });
 const processDailySalesTask = new Task("process-daily-sales", () => {
   return {
-    startAt: new Date(2016, 12, 10, 13, 10, 12),
+    startAt: new Date(Date.UTC(2016, 12, 10, 15, 10, 12)),
     priority: TaskPriority.VeryLow
   };
 });

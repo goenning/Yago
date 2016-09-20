@@ -2,7 +2,11 @@
 
 An asynchronous task runner for Node.js ecosystem.
 
-1. Runs on a single process, but can be clustered.
+[![NPM](https://img.shields.io/npm/v/yago.svg)](https://www.npmjs.com/package/yago)
+[![Build](https://travis-ci.org/goenning/yago.svg?branch=master)](https://travis-ci.org/goenning/yago)
+[![Coverage](https://coveralls.io/repos/github/goenning/yago/badge.svg?branch=master)](https://coveralls.io/github/goenning/yago?branch=master)
+![Dependencies](https://david-dm.org/goenning/yago.svg)
+![devDependencies](https://david-dm.org/goenning/yago/dev-status.svg#info=devDependencies)
 
 # Definitions:
 
