@@ -4,6 +4,7 @@
     "**/*.js": true,
     "node_modules": true,
     "typings": true,
-    "coverage": true
+    "coverage": true,
+    "npm-debug.log": true
   }
 }
