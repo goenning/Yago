@@ -22,8 +22,8 @@
   "scripts": {
     "lint": "tslint **/*.ts",
     "build": "tsc",
-    "test": "mocha test/",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- test/ -R spec",
+    "test": "mocha dist/test/",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- dist/test/ -R spec",
     "check-coverage": "istanbul check-coverage --statements 90 --branches 90 --functions 90 --lines 90",
     "update-coveralls": "cat coverage/lcov.info | node ./node_modules/coveralls/bin/coveralls.js",
     "start-redis": "docker run -d -p 6060:6379 redis"
