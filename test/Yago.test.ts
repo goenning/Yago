@@ -25,7 +25,7 @@ describe("Yago", () => {
   it("should process first task", (done) => {
     yago.enqueue("hello-world");
 
-    output.on("data", (data) => {
+    output.on("data", (data: string) => {
       expect(data).to.be.eq("Hello World");
       done();
     });
@@ -36,7 +36,7 @@ describe("Yago", () => {
   it("should process task with payload", (done) => {
     yago.enqueue("hello-world", { payload: "Yago" });
 
-    output.on("data", (data) => {
+    output.on("data", (data: string) => {
       expect(data).to.be.eq("Hello World: Yago");
       done();
     });
@@ -49,7 +49,7 @@ describe("Yago", () => {
     yago.enqueue("hello-world");
 
     let count = 0;
-    yago.on("process", (task) => {
+    yago.on("process", (task: Task) => {
       count++;
       if (count === 2) {
         done();

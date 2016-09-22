@@ -26,7 +26,7 @@ describe("Yago (schedule)", () => {
     yago.enqueue("hello-world");
     yago.schedule("* * * * * *", "hello-world");
 
-    yago.on("enqueue", (task) => {
+    yago.on("enqueue", (task: Task) => {
       expect(task.name).to.be.eq("hello-world");
       done();
     });
