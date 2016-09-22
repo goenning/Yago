@@ -1,4 +1,4 @@
-import { TaskRunner, ITaskRunnerClass, ExecutionContext, ExecutionResult } from "./TaskRunner";
+import { TaskRunner, ITaskRunnerClass, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "./TaskRunner";
 import { TaskQueue } from "./TaskQueue";
 import { Task, TaskOptions } from "./Task";
 import { InProcessTaskQueue } from "./InProcessTaskQueue";
@@ -27,13 +27,15 @@ export class Yago extends EventEmitter {
   }
 
   register(runner: ITaskRunnerClass): void {
-    this.runners[runner.taskName] = runner;
+    if (runner.taskName) {
+      this.runners[runner.taskName] = runner;
+    }
   }
 
   schedule(cron: string, taskName: string, options?: TaskOptions): void {
     new CronJob(cron, () => {
       this.enqueue(taskName, options);
-    }, null, true);
+    }, undefined, true);
   }
 
   enqueue(taskName: string, options?: TaskOptions): Promise<Task> {
@@ -52,7 +54,7 @@ export class Yago extends EventEmitter {
     clearInterval(this.timer);
   }
 
-  private async processQueue(): Promise<ExecutionResult> {
+  private async processQueue(): Promise<ExecutionResult | undefined> {
     const task = await this.queue.dequeue();
     if (task) {
       if (this.runners[task.name]) {

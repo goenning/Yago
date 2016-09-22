@@ -24,7 +24,8 @@ export interface ITaskRunnerClass {
 export enum ExecutionResultOutcome {
   Unknown = 0,
   Success = 1,
-  Failure = 2
+  Failure = 2,
+  Ignored = 3
 }
 
 export interface TaskRunner {

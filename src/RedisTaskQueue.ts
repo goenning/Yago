@@ -31,7 +31,7 @@ export class RedisTaskQueue extends TaskQueue {
     });
   }
 
-  async dequeue(): Promise<Task> {
+  async dequeue(): Promise<Task | undefined> {
     let item: string;
     let count: number;
 

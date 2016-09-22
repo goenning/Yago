@@ -28,19 +28,19 @@ const all = [
     name: "helloWorldTask",
     task: helloWorldTask,
     score: 3,
-    json: `{\"id\":\"${helloWorldTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null,"payload":null}`
+    json: `{\"id\":\"${helloWorldTask.id}\",\"name\":\"hello-world\",\"priority\":3}`
   },
   {
     name: "helloWorldTypeScriptTask",
     task: helloWorldTypeScriptTask,
     score: 3,
-    json: `{\"id\":\"${helloWorldTypeScriptTask.id}\",\"name\":\"hello-world\",\"priority\":3,\"startAt\":null,"payload":\"TypeScript\"}`
+    json: `{\"id\":\"${helloWorldTypeScriptTask.id}\",\"name\":\"hello-world\",\"priority\":3,"payload":\"TypeScript\"}`
   },
   {
     name: "welcomeMessageTask",
     task: welcomeMessageTask,
     score: 1,
-    json: `{\"id\":\"${welcomeMessageTask.id}\",\"name\":\"welcome-message\",\"priority\":1,\"startAt\":null,"payload":null}`
+    json: `{\"id\":\"${welcomeMessageTask.id}\",\"name\":\"welcome-message\",\"priority\":1}`
   },
   {
     name: "assignmentReminderTask",
@@ -52,7 +52,7 @@ const all = [
     name: "processDailySalesTask",
     task: processDailySalesTask,
     score: 1484061012005,
-    json: `{\"id\":\"${processDailySalesTask.id}\",\"name\":\"process-daily-sales\",\"priority\":5,\"startAt\":\"2017-01-10T15:10:12.000Z\","payload":null}`
+    json: `{\"id\":\"${processDailySalesTask.id}\",\"name\":\"process-daily-sales\",\"priority\":5,\"startAt\":\"2017-01-10T15:10:12.000Z\"}`
   }
 ];
 
