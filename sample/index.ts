@@ -1,5 +1,5 @@
 import { TaskRunner, RunTask, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "../src";
-import { Yago } from "../src/Yago";
+import { Yago } from "../src/yago";
 
 @RunTask("greet")
 class GreeterTaskRunner implements TaskRunner {

@@ -2,7 +2,7 @@ import { InProcessTaskQueue } from "../src/inprocess_task_queue";
 import { RedisTaskQueue } from "../src/redis_task_queue";
 import { TaskQueue } from "../src/task_queue";
 import { expect } from "chai";
-import { Task } from "../src/Task";
+import { Task } from "../src/task";
 
 interface TestItem {
   name: string;
