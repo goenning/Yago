@@ -1,4 +1,4 @@
-import { TaskRunner, RunTask, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "../src/TaskRunner";
+import { TaskRunner, RunTask, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "../src";
 import { Yago } from "../src/Yago";
 
 @RunTask("greet")

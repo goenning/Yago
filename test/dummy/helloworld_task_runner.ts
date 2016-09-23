@@ -1,4 +1,7 @@
-import { RunTask, TaskRunner, ITaskRunnerClass, ExecutionResult, ExecutionResultOutcome, ExecutionContext } from "../../src/TaskRunner";
+import {
+  RunTask, TaskRunner, ITaskRunnerClass,
+  ExecutionResult, ExecutionResultOutcome, ExecutionContext
+} from "../../src/task_runner";
 
 @RunTask("hello-world")
 export class HelloWorldTaskRunner implements TaskRunner {

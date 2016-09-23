@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { Task } from "../src/Task";
-import { Yago } from "../src/Yago";
-import { ExecutionResult, ExecutionResultOutcome } from "../src/TaskRunner";
-import { HelloWorldTaskRunner } from "./dummy/HelloWorldTaskRunner";
-import { MemoryStream } from "./helper/MemoryStream";
+import { Task } from "../src/task";
+import { Yago } from "../src/yago";
+import { ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
+import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";
+import { MemoryStream } from "./helper/memory_stream";
 
 describe("Yago (schedule)", () => {
   let yago: Yago;

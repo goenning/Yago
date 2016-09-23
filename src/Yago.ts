@@ -1,7 +1,7 @@
-import { TaskRunner, ITaskRunnerClass, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "./TaskRunner";
-import { TaskQueue } from "./TaskQueue";
-import { Task, TaskOptions } from "./Task";
-import { InProcessTaskQueue } from "./InProcessTaskQueue";
+import { TaskRunner, ITaskRunnerClass, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "./task_runner";
+import { TaskQueue } from "./task_queue";
+import { Task, TaskOptions } from "./task";
+import { InProcessTaskQueue } from "./inprocess_task_queue";
 import { EventEmitter } from "events";
 import { CronJob } from "cron";
 

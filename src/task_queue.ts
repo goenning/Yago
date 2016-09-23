@@ -1,4 +1,4 @@
-import { Task } from "./Task";
+import { Task } from "./task";
 
 export abstract class TaskQueue {
   abstract count(): Promise<number>;

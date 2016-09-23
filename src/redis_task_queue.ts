@@ -1,5 +1,5 @@
-import { TaskQueue } from "./TaskQueue";
-import { Task } from "./Task";
+import { TaskQueue } from "./task_queue";
+import { Task } from "./task";
 import * as redis from "redis";
 
 export class RedisTaskQueue extends TaskQueue {

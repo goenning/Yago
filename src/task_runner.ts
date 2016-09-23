@@ -1,4 +1,4 @@
-import { Task } from "./Task";
+import { Task } from "./task";
 
 export function RunTask(taskName: string) {
     return function (target: ITaskRunnerClass) {

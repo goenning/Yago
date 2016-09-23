@@ -1,4 +1,4 @@
-import { Task, TaskPriority } from "../src/Task";
+import { Task, TaskPriority } from "../src/task";
 import { expect } from "chai";
 
 const helloWorldTask = new Task("hello-world");
