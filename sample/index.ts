@@ -1,20 +1,19 @@
-import { TaskRunner, RunTask, ExecutionContext, ExecutionResult, ExecutionResultOutcome } from "../src";
 import { Yago } from "../src/yago";
+import { TaskRunner, RedisTaskQueue, RunTask, ExecutionContext } from "../src";
 
 @RunTask("greet")
 class GreeterTaskRunner extends TaskRunner {
   async execute(ctx: ExecutionContext) {
     ctx.output.write(`Greetings: ${ctx.task.payload} \n`);
-    return new ExecutionResult(ExecutionResultOutcome.Success);
+    return this.success();
   }
 }
 
 const date = new Date(2016, 8, 24, 17, 36, 0);
-
-const yago = new Yago();
+const queue = new RedisTaskQueue("redis://localhost:6060");
+const yago = new Yago({ queue });
 yago.register(GreeterTaskRunner);
 yago.schedule("* * * * * *", "greet", () => {
   return { payload: "Yago" };
 });
-yago.enqueue("greet", { startAt: date, payload: "Yagoooo" });
 yago.start();

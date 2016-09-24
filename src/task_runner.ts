@@ -35,4 +35,7 @@ export abstract class TaskRunner {
   retryCount(): number {
     return DEFAULT_RETRY_COUNT;
   }
+  success(): ExecutionResult {
+    return new ExecutionResult(ExecutionResultOutcome.Success);
+  }
 }
