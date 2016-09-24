@@ -12,12 +12,12 @@ export class RedisTaskQueue extends TaskQueue {
   }
 
   async enqueue(task: Task): Promise<Task> {
-    await this.sendCommand("ZADD", this.key, task.getScore(), task.toJson());
+    await this.sendCommand("ZADD", [ this.key, task.getScore(), task.toJson() ]);
     return task;
   }
 
   async count(): Promise<number> {
-    return await this.sendCommand<number>("ZCARD", this.key);
+    return await this.sendCommand<number>("ZCARD", [ this.key ]);
   }
 
   async dequeue(): Promise<Task | undefined> {
@@ -44,16 +44,16 @@ export class RedisTaskQueue extends TaskQueue {
   }
 
   private async first(): Promise<string | undefined> {
-    const list = await this.sendCommand<string[]>("ZRANGE", this.key, 0, 0);
+    const list = await this.sendCommand<string[]>("ZRANGE", [ this.key, 0, 0 ]);
     if (list && list.length > 0)
       return list[0];
   }
 
   private async remove(item: string): Promise<number> {
-    return await this.sendCommand<number>("ZREMRANGEBYRANK", this.key, 0, 0);
+    return await this.sendCommand<number>("ZREMRANGEBYRANK", [ this.key, 0, 0 ]);
   }
 
-  private sendCommand<T>(command: string, ...args: any[]): Promise<T> {
+  private sendCommand<T>(command: string, args: any[]): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       this.client.send_command(command, args, (err: any, obj: T) => {
         if (err)
