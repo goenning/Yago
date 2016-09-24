@@ -2,7 +2,7 @@ import { TaskRunner, RunTask, ExecutionContext, ExecutionResult, ExecutionResult
 import { Yago } from "../src/yago";
 
 @RunTask("greet")
-class GreeterTaskRunner implements TaskRunner {
+class GreeterTaskRunner extends TaskRunner {
   async execute(ctx: ExecutionContext) {
     ctx.output.write(`Greetings: ${ctx.task.payload} \n`);
     return new ExecutionResult(ExecutionResultOutcome.Success);
