@@ -26,8 +26,11 @@ export class InProcessTaskQueue extends TaskQueue {
 
   dequeue(): Promise<Task | undefined> {
     const task = this.queue.shift();
-    if (task && task.startAt && task.startAt > new Date())
-      return Promise.resolve(undefined);
+    if (task && task.startAt && task.startAt > new Date()) {
+      return this.enqueue(task).then(() => {
+        return undefined;
+      });
+    }
     return Promise.resolve(task);
   }
 

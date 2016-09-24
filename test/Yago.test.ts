@@ -29,7 +29,7 @@ describe("Yago", () => {
 
   it("should process initialize with default values", () => {
     const defaultYago = new Yago();
-    expect(defaultYago.interval).to.be.eq(1000);
+    expect(defaultYago.interval).to.be.eq(500);
     expect(defaultYago.runners).to.be.empty;
     expect(defaultYago.output).to.be.eq(process.stdout);
     expect(defaultYago.queue).to.be.instanceof(InProcessTaskQueue);

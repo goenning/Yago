@@ -49,7 +49,9 @@ items.forEach((item) => {
       const task = new Task("hello-world", { startAt: new Date(2050, 1, 1, 1, 1, 1) });
       await queue.enqueue(task);
       const anotherTask = await queue.dequeue();
+      const count = await queue.count();
       expect(anotherTask).to.be.undefined;
+      expect(count).to.be.eq(1);
     });
 
     it("should enqueue in order", async () => {

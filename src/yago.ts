@@ -24,7 +24,7 @@ export class Yago extends EventEmitter {
     this.runners = {};
     this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
     this.output = options && options.output ? options.output : process.stdout;
-    this.interval = options && options.interval ? options.interval : 1000;
+    this.interval = options && options.interval ? options.interval : 500;
   }
 
   register(runner: ITaskRunnerClass): void {

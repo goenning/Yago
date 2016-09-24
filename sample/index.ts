@@ -9,9 +9,12 @@ class GreeterTaskRunner extends TaskRunner {
   }
 }
 
+const date = new Date(2016, 8, 24, 17, 36, 0);
+
 const yago = new Yago();
 yago.register(GreeterTaskRunner);
 yago.schedule("* * * * * *", "greet", () => {
   return { payload: "Yago" };
 });
+yago.enqueue("greet", { startAt: date, payload: "Yagoooo" });
 yago.start();
