@@ -11,28 +11,17 @@ export class RedisTaskQueue extends TaskQueue {
     this.client = redis.createClient(connString);
   }
 
-  enqueue(task: Task): Promise<Task> {
-    return new Promise((resolve, reject) => {
-      this.client.zadd(this.key, task.getScore(), task.toJson(), (err, count) => {
-        if (err)
-          reject(err);
-        resolve(task);
-      });
-    });
+  async enqueue(task: Task): Promise<Task> {
+    await this.sendCommand("ZADD", this.key, task.getScore(), task.toJson());
+    return task;
   }
 
-  count(): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.client.zcard(this.key, (err, count) => {
-        if (err)
-          reject(err);
-        resolve(count);
-      });
-    });
+  async count(): Promise<number> {
+    return await this.sendCommand<number>("ZCARD", this.key);
   }
 
   async dequeue(): Promise<Task | undefined> {
-    let item: string;
+    let item: string | undefined;
     let count: number;
 
     do {
@@ -47,33 +36,30 @@ export class RedisTaskQueue extends TaskQueue {
       count = await this.remove(item);
     } while (count === 0);
 
-
-    return item ? Task.fromJson(item) : undefined;
+    return Task.fromJson(item);
   }
 
   flush(): void {
     this.client.del(this.key);
   }
 
-  private first(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.client.zrange(this.key, 0, 0, (err, list) => {
-        if (list && list.length > 0)
-          resolve(list[0]);
-
-        resolve(undefined);
-      });
-    });
+  private async first(): Promise<string | undefined> {
+    const list = await this.sendCommand<string[]>("ZRANGE", this.key, 0, 0);
+    if (list && list.length > 0)
+      return list[0];
   }
 
-  private remove(item: string): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.client.zremrangebyrank(this.key, 0, 0, (err, count) => {
+  private async remove(item: string): Promise<number> {
+    return await this.sendCommand<number>("ZREMRANGEBYRANK", this.key, 0, 0);
+  }
+
+  private sendCommand<T>(command: string, ...args: any[]): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      this.client.send_command(command, args, (err: any, obj: T) => {
         if (err)
-          resolve(0);
-
-        resolve(count);
+          reject(err);
+        resolve(obj);
       });
     });
-  }
+  };
 }

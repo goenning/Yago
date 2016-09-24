@@ -27,7 +27,7 @@ items.forEach((item) => {
       expect(count).to.be.eq(0);
     });
 
-    it("should not be able to dequeue an queue", async () => {
+    it("should not be able to dequeue an empty queue", async () => {
       const task = await queue.dequeue();
       expect(task).to.be.undefined;
     });
