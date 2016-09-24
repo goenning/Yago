@@ -47,7 +47,7 @@ export class Yago extends EventEmitter {
   start(): void {
     this.timer = setInterval(() => {
       this.processQueue();
-    }, 5);
+    }, this.interval);
   }
 
   stop(): void {
@@ -55,16 +55,23 @@ export class Yago extends EventEmitter {
   }
 
   private async processQueue(): Promise<ExecutionResult | undefined> {
+    let retry = 0;
     const task = await this.queue.dequeue();
     if (task) {
       if (this.runners[task.name]) {
         const ctx = new ExecutionContext(task, this.output);
         const runner = new this.runners[task.name]();
 
-        this.emit("process", task);
-        const result = await runner.execute(ctx);
-        this.emit("processed", task, result);
-        return result;
+        do {
+          this.emit("process", task);
+          try {
+            const result = await runner.execute(ctx);
+            this.emit("processed", task, result);
+            return result;
+          } catch (err) {
+            this.emit("errored", task, err);
+          }
+        } while (++retry < runner.retryCount());
       } else {
         this.emit("ignored", task);
       }

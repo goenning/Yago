@@ -3,6 +3,7 @@ import { Task } from "../src/task";
 import { Yago } from "../src/yago";
 import { ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
 import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";
+import { ThrowErrorTaskRunner } from "./dummy/throwerror_task_runner";
 import { MemoryStream } from "./helper/memory_stream";
 
 describe("Yago", () => {
@@ -16,6 +17,7 @@ describe("Yago", () => {
       interval: 5
     });
     yago.register(HelloWorldTaskRunner);
+    yago.register(ThrowErrorTaskRunner);
   });
 
   afterEach(() => {
@@ -65,6 +67,31 @@ describe("Yago", () => {
     let count = 0;
     yago.on("processed", (task: Task, result: ExecutionResult) => {
       expect(result.outcome).to.be.eq(ExecutionResultOutcome.Success);
+      done();
+    });
+
+    yago.start();
+  });
+
+  it("should retry more times based on TaskRunner retry count", (done) => {
+    yago.enqueue("throw-error");
+
+    let count = 0;
+    yago.on("errored", (task: Task, err: any) => {
+      expect(err).to.deep.eq(new Error("Something happened..."));
+      if (++count === 2)
+        done();
+    });
+
+    yago.start();
+  });
+
+  it("should enqueue new task every second", (done) => {
+    yago.enqueue("hello-world");
+    yago.schedule("* * * * * *", "hello-world");
+
+    yago.on("enqueue", (task: Task) => {
+      expect(task.name).to.be.eq("hello-world");
       done();
     });
 

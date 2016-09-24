@@ -1,5 +1,7 @@
 import { Task } from "./task";
 
+export const DEFAULT_RETRY_COUNT = 3;
+
 export function RunTask(taskName: string) {
     return function (target: ITaskRunnerClass) {
        target.taskName = taskName;
@@ -28,6 +30,9 @@ export enum ExecutionResultOutcome {
   Ignored = 3
 }
 
-export interface TaskRunner {
-  execute(ctx: ExecutionContext): Promise<ExecutionResult>;
+export abstract class TaskRunner {
+  abstract execute(ctx: ExecutionContext): Promise<ExecutionResult>;
+  retryCount(): number {
+    return DEFAULT_RETRY_COUNT;
+  }
 }
