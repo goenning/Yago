@@ -29,7 +29,8 @@ export class Yago extends EventEmitter {
   register(runner: ITaskRunnerClass): void {
     if (runner.taskName) {
       this.runners[runner.taskName] = runner;
-    }
+    } else
+      throw new Error(`${runner.name} does not have a RunTask decoration.`);
   }
 
   schedule(cron: string, taskName: string, options?: TaskOptions): void {

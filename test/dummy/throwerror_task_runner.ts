@@ -7,8 +7,4 @@ export class ThrowErrorTaskRunner extends TaskRunner {
   async execute(ctx: ExecutionContext) {
     throw new Error("Something happened...");
   }
-
-  retryCount(): number {
-    return 2;
-  }
 }

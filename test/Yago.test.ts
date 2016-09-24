@@ -1,9 +1,11 @@
 import { expect } from "chai";
 import { Task } from "../src/task";
 import { Yago } from "../src/yago";
-import { ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
+import { InProcessTaskQueue } from "../src/inprocess_task_queue";
+import { DEFAULT_RETRY_COUNT, ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
 import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";
 import { ThrowErrorTaskRunner } from "./dummy/throwerror_task_runner";
+import { NoNameTaskRunner } from "./dummy/noname_task_runner";
 import { MemoryStream } from "./helper/memory_stream";
 
 describe("Yago", () => {
@@ -14,6 +16,7 @@ describe("Yago", () => {
     output = new MemoryStream();
     yago = new Yago({
       output,
+      queue: new InProcessTaskQueue(),
       interval: 5
     });
     yago.register(HelloWorldTaskRunner);
@@ -79,7 +82,7 @@ describe("Yago", () => {
     let count = 0;
     yago.on("errored", (task: Task, err: any) => {
       expect(err).to.deep.eq(new Error("Something happened..."));
-      if (++count === 2)
+      if (++count === DEFAULT_RETRY_COUNT)
         done();
     });
 
@@ -108,5 +111,9 @@ describe("Yago", () => {
     });
 
     yago.start();
+  });
+
+  it("should throw error when registering unnamed TaskRunners", () => {
+    expect(yago.register.bind(yago, NoNameTaskRunner)).to.throw(Error, "NoNameTaskRunner does not have a RunTask decoration.");
   });
 });
