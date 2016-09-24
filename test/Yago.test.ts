@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Task } from "../src/task";
-import { Yago } from "../src/yago";
+import { Yago } from "../src";
 import { InProcessTaskQueue } from "../src/inprocess_task_queue";
 import { DEFAULT_RETRY_COUNT, ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
 import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";

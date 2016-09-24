@@ -1,0 +1,26 @@
+{
+  "lines": 95,
+  "statements": 95,
+  "functions": 95,
+  "branches": 95,
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "typings"
+  ],
+  "extension": [
+    ".ts"
+  ],
+  "require": [
+    "ts-node/register"
+  ],
+  "reporter": [
+    "json",
+    "html",
+    "lcov",
+    "text-summary"
+  ],
+  "check-coverage": true,
+  "all": true
+}

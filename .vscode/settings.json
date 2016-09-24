@@ -5,7 +5,8 @@
     "node_modules": true,
     "typings": true,
     "coverage": true,
-    "npm-debug.log": true
+    "npm-debug.log": true,
+    ".nyc_output": true
   },
   "typescript.tsdk": "node_modules/typescript/lib"
 }

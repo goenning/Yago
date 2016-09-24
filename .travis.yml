@@ -19,7 +19,6 @@ before_script:
 
 after_script:
   - npm run coverage
-  - npm run check-coverage
   - npm run update-coveralls
 
 notifications:
