@@ -12,11 +12,12 @@ export interface YagoOptions {
 }
 
 export class Yago extends EventEmitter {
-  private queue: TaskQueue;
+  public readonly queue: TaskQueue;
+  public readonly output: NodeJS.WritableStream;
+  public readonly runners: { [key: string]: ITaskRunnerClass };
+  public readonly interval: number;
+
   private timer: NodeJS.Timer;
-  private output: NodeJS.WritableStream;
-  private runners: { [key: string]: ITaskRunnerClass };
-  private interval: number;
 
   constructor(options?: YagoOptions) {
     super();
