@@ -10,8 +10,6 @@ services:
   - docker
 
 before_script:
-  - npm install typings -g
-  - typings install
   - npm run build
   - npm run start-redis
   - npm run lint

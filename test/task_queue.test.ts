@@ -42,7 +42,7 @@ items.forEach((item) => {
       const task = new Task("hello-world");
       await queue.enqueue(task);
       const anotherTask = await queue.dequeue();
-      expect(anotherTask).to.deep.eq(task);
+      expect(anotherTask).to.deep.equal(task);
     });
 
     it("should only dequeue if it's ready to be processed", async () => {
@@ -67,9 +67,9 @@ items.forEach((item) => {
       const secondDequeued = await queue.dequeue();
       const thirdDequeued = await queue.dequeue();
 
-      expect(firstDequeued).to.deep.eq(secondEnqueued);
-      expect(secondDequeued).to.deep.eq(thirdEnqueued);
-      expect(thirdDequeued).to.deep.eq(firstEnqueued);
+      expect(firstDequeued).to.deep.equal(secondEnqueued);
+      expect(secondDequeued).to.deep.equal(thirdEnqueued);
+      expect(thirdDequeued).to.deep.equal(firstEnqueued);
     });
   });
 });

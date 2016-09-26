@@ -89,7 +89,7 @@ describe("Yago", () => {
 
     let count = 0;
     yago.on("errored", (task: Task, err: any) => {
-      expect(err).to.deep.eq(new Error("Something happened..."));
+      expect(err).to.deep.equal(new Error("Something happened..."));
       if (++count === DEFAULT_RETRY_COUNT)
         done();
     });
