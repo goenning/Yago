@@ -9,6 +9,7 @@ import { DEFAULT_RETRY_COUNT, ExecutionResult, ExecutionResultOutcome } from "..
 import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";
 import { ThrowErrorTaskRunner } from "./dummy/throwerror_task_runner";
 import { NoNameTaskRunner } from "./dummy/noname_task_runner";
+import * as request from "request";
 
 describe("Yago", () => {
   let yago: Yago;
@@ -114,5 +115,18 @@ describe("Yago", () => {
 
   it("should throw error when registering unnamed TaskRunners", () => {
     expect(yago.register.bind(yago, NoNameTaskRunner)).to.throw(Error, "NoNameTaskRunner does not have a RunTask decoration.");
+  });
+
+  it.only("should queue task when using HTTP API", (done) => {
+    yago.start();
+    yago.on("enqueue", (task: Task) => {
+      expect(task.name).to.be.eq("hello-world-via-api");
+      done();
+    });
+
+    const data = {
+      name: "hello-world-via-api"
+    };
+    request.post("http://localhost:8888/api/enqueue", { json: data });
   });
 });
