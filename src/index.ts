@@ -4,3 +4,5 @@ export { Task } from "./task";
 export { TaskQueue } from "./task_queue";
 export { InProcessTaskQueue } from "./inprocess_task_queue";
 export { RedisTaskQueue } from "./redis_task_queue";
+export { Logger } from "./logger";
+export { StandardLogger } from "./logger/standard_logger";

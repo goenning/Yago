@@ -4,16 +4,18 @@ import { Task, TaskOptions } from "./task";
 import { InProcessTaskQueue } from "./inprocess_task_queue";
 import { EventEmitter } from "events";
 import { CronJob } from "cron";
+import { Logger } from "./logger";
+import { StandardLogger } from "./logger/standard_logger";
 
 export interface YagoOptions {
   queue?: TaskQueue;
   interval?: number;
-  output?: NodeJS.WritableStream;
+  logger?: Logger;
 }
 
 export class Yago extends EventEmitter {
   public readonly queue: TaskQueue;
-  public readonly output: NodeJS.WritableStream;
+  public readonly logger: Logger;
   public readonly runners: { [key: string]: ITaskRunnerClass };
   public readonly interval: number;
 
@@ -22,8 +24,8 @@ export class Yago extends EventEmitter {
   constructor(options?: YagoOptions) {
     super();
     this.runners = {};
+    this.logger = options && options.logger ? options.logger : new StandardLogger(process.stdout);
     this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
-    this.output = options && options.output ? options.output : process.stdout;
     this.interval = options && options.interval ? options.interval : 500;
   }
 
@@ -48,7 +50,7 @@ export class Yago extends EventEmitter {
 
   start(): void {
     this.timer = setInterval(() => {
-      this.processQueue();
+      this._processQueue();
     }, this.interval);
   }
 
@@ -56,12 +58,12 @@ export class Yago extends EventEmitter {
     clearInterval(this.timer);
   }
 
-  private async processQueue(): Promise<ExecutionResult | undefined> {
+  private async _processQueue(): Promise<ExecutionResult | undefined> {
     let retry = 0;
     const task = await this.queue.dequeue();
     if (task) {
       if (this.runners[task.name]) {
-        const ctx = new ExecutionContext(task, this.output);
+        const ctx = new ExecutionContext(task, this.logger);
         const runner = new this.runners[task.name]();
 
         do {

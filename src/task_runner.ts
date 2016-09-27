@@ -1,4 +1,5 @@
 import { Task } from "./task";
+import { Logger } from "./logger";
 
 export const DEFAULT_RETRY_COUNT = 3;
 
@@ -14,7 +15,7 @@ export class ExecutionResult {
 }
 
 export class ExecutionContext {
-  constructor(public task: Task, public output: NodeJS.WritableStream) {
+  constructor(public task: Task, public logger: Logger) {
   }
 }
 

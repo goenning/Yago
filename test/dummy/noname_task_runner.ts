@@ -6,6 +6,6 @@ import {
 
 export class NoNameTaskRunner extends TaskRunner {
   async execute(ctx: ExecutionContext) {
-    return new ExecutionResult(ExecutionResultOutcome.Success);
+    return this.success();
   }
 }

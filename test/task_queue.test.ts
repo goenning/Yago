@@ -11,7 +11,7 @@ interface TestItem {
 
 const items: TestItem[] = [
   { name: "InProcessTaskQueue", newQueue: () => new InProcessTaskQueue() },
-  //{ name: "RedisQueue", newQueue: () => new RedisTaskQueue("redis://localhost:6060") }
+  { name: "RedisQueue", newQueue: () => new RedisTaskQueue("redis://localhost:6060") }
 ];
 
 items.forEach((item) => {

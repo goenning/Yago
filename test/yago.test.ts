@@ -1,21 +1,23 @@
 import { expect } from "chai";
 import { Task } from "../src/task";
 import { Yago } from "../src";
+import { Logger } from "../src/logger";
+import { StandardLogger } from "../src/logger/standard_logger";
+import { MemoryLogger } from "./helper/memory_logger";
 import { InProcessTaskQueue } from "../src/inprocess_task_queue";
 import { DEFAULT_RETRY_COUNT, ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
 import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";
 import { ThrowErrorTaskRunner } from "./dummy/throwerror_task_runner";
 import { NoNameTaskRunner } from "./dummy/noname_task_runner";
-import { MemoryStream } from "./helper/memory_stream";
 
 describe("Yago", () => {
   let yago: Yago;
-  let output: NodeJS.WritableStream;
+  let logger: MemoryLogger;
 
   beforeEach(() => {
-    output = new MemoryStream();
+    logger = new MemoryLogger();
     yago = new Yago({
-      output,
+      logger,
       queue: new InProcessTaskQueue(),
       interval: 5
     });
@@ -31,30 +33,8 @@ describe("Yago", () => {
     const defaultYago = new Yago();
     expect(defaultYago.interval).to.be.eq(500);
     expect(defaultYago.runners).to.be.empty;
-    expect(defaultYago.output).to.be.eq(process.stdout);
+    expect(defaultYago.logger).to.be.instanceof(StandardLogger);
     expect(defaultYago.queue).to.be.instanceof(InProcessTaskQueue);
-  });
-
-  it("should process first task", (done) => {
-    yago.enqueue("hello-world");
-
-    output.on("data", (data: string) => {
-      expect(data).to.be.eq("Hello World");
-      done();
-    });
-
-    yago.start();
-  });
-
-  it("should process task with payload", (done) => {
-    yago.enqueue("hello-world", { payload: "Yago" });
-
-    output.on("data", (data: string) => {
-      expect(data).to.be.eq("Hello World: Yago");
-      done();
-    });
-
-    yago.start();
   });
 
   it("should emit process event for both tasks", (done) => {
@@ -115,6 +95,17 @@ describe("Yago", () => {
     let count = 0;
     yago.on("ignored", (task: Task) => {
       expect(task.name).to.be.eq("send-email");
+      done();
+    });
+
+    yago.start();
+  });
+
+  it("should process task with payload", (done) => {
+    yago.enqueue("hello-world", { payload: "Yago" });
+
+    logger.on("data", (data: string) => {
+      expect(data).to.be.eq("Hello World: Yago");
       done();
     });
 
