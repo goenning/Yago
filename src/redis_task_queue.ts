@@ -6,9 +6,12 @@ export class RedisTaskQueue extends TaskQueue {
   private client: redis.RedisClient;
   private key = "yago.queue";
 
-  constructor(connString: string) {
+  constructor(connString: string, key?: string) {
     super();
     this.client = redis.createClient(connString);
+
+    if (key)
+      this.key = key;
   }
 
   async enqueue(task: Task): Promise<Task> {

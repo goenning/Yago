@@ -71,5 +71,20 @@ items.forEach((item) => {
       expect(secondDequeued).to.deep.equal(thirdEnqueued);
       expect(thirdDequeued).to.deep.equal(firstEnqueued);
     });
+
+    if (item.name === "RedisQueue") {
+      it("should be able to have a different key", async () => {
+        const otherQueue = new RedisTaskQueue("redis://localhost:6060", "some-other-key");
+        otherQueue.flush();
+
+        await otherQueue.enqueue(new Task("hello-world"));
+
+        const queueCount = await queue.count();
+        const otherQueueCount = await otherQueue.count();
+
+        expect(queueCount).to.be.equal(0);
+        expect(otherQueueCount).to.be.equal(1);
+      });
+    }
   });
 });
