@@ -10,7 +10,7 @@ describe("Standard Logger", () => {
   let sandbox: sinon.SinonSandbox;
   let clock: sinon.SinonFakeTimers;
   const now = new Date(Date.UTC(2010, 10, 2, 14, 43, 12, 234));
-  
+
   beforeEach(() => {
     output = new MemoryStream();
     logger = new StandardLogger(output);
