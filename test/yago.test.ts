@@ -117,7 +117,7 @@ describe("Yago", () => {
     expect(yago.register.bind(yago, NoNameTaskRunner)).to.throw(Error, "NoNameTaskRunner does not have a RunTask decoration.");
   });
 
-  it.only("should queue task when using HTTP API", (done) => {
+  it("should queue task when using HTTP API", (done) => {
     yago.start();
     yago.on("enqueue", (task: Task) => {
       expect(task.name).to.be.eq("hello-world-via-api");
