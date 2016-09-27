@@ -7,7 +7,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "typings"
+    "dist"
   ],
   "extension": [
     ".ts"
