@@ -16,6 +16,7 @@ export class RedisTaskQueue extends TaskQueue {
 
   async enqueue(task: Task): Promise<Task> {
     await this.sendCommand("ZADD", [ this.key, task.getScore(), task.toJson() ]);
+    this.emit("enqueued", task);
     return task;
   }
 

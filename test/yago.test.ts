@@ -82,7 +82,7 @@ describe("Yago", () => {
     yago.enqueue("hello-world");
     yago.schedule("* * * * * *", "hello-world");
 
-    yago.on("enqueue", (task: Task) => {
+    yago.on("enqueued", (task: Task) => {
       expect(task.name).to.be.eq("hello-world");
       done();
     });
@@ -119,14 +119,12 @@ describe("Yago", () => {
 
   it("should queue task when using HTTP API", (done) => {
     yago.start();
-    yago.on("enqueue", (task: Task) => {
+    yago.on("enqueued", (task: Task) => {
       expect(task.name).to.be.eq("hello-world-via-api");
       done();
     });
 
-    const data = {
-      name: "hello-world-via-api"
-    };
+    const data = { name: "hello-world-via-api" };
     request.post("http://localhost:8888/api/enqueue", { json: data });
   });
 });

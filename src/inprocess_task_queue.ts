@@ -13,15 +13,20 @@ export class InProcessTaskQueue extends TaskQueue {
   }
 
   enqueue(task: Task): Promise<Task> {
+    const finish = (task: Task) => {
+      this.emit("enqueued", task);
+      return Promise.resolve(task);
+    };
+
     for (let i = 0; i < this.queue.length; i++) {
       if (this.queue[i].getScore() > task.getScore()) {
         this.queue.splice(i, 0, task);
-        return Promise.resolve(task);
+        return finish(task);
       }
     }
 
     this.queue.push(task);
-    return Promise.resolve(task);
+    return finish(task);
   }
 
   dequeue(): Promise<Task | undefined> {

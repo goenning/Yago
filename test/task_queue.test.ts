@@ -38,6 +38,14 @@ items.forEach((item) => {
       expect(count).to.be.eq(1);
     });
 
+    it("should call enqueued event after enqueue", (done) => {
+      queue.on("enqueued", (task: Task) => {
+        expect(task.name).to.be.eq("hello-world");
+        done();
+      });
+      queue.enqueue(new Task("hello-world"));
+    });
+
     it("should have the same task after enqueue/dequeue", async () => {
       const task = new Task("hello-world");
       await queue.enqueue(task);

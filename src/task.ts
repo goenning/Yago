@@ -1,4 +1,5 @@
 import { v4 } from "node-uuid";
+import * as msg from "./messages";
 
 export interface TaskOptions {
   priority?: TaskPriority;
@@ -22,6 +23,8 @@ export class Task {
   public payload: any;
 
   constructor(name: string, options?: TaskOptions | (() => TaskOptions)) {
+    if (!name)
+      throw new Error(msg.TASK_NAME_REQUIRED);
 
     this.id = v4();
     this.name = name;
@@ -48,14 +51,14 @@ export class Task {
     });
   }
 
-  static fromJson(input: string): Task {
-    const json = JSON.parse(input);
+  static fromJson(input: string | {}): Task {
+    const json = typeof input === "string" ? JSON.parse(input) : input;
     const task = new Task(json.name, {
       priority: json.priority,
       startAt: json.startAt ? new Date(json.startAt) : undefined,
       payload: json.payload
     });
-    task.id = json.id;
+    task.id = json.id || v4();
     return task;
   }
 }

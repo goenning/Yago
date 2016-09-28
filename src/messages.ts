@@ -1,0 +1,1 @@
+export const TASK_NAME_REQUIRED = "Task name is required";

@@ -1,4 +1,5 @@
 import { Task, TaskPriority } from "../src/task";
+import * as msg from "../src/messages";
 import { expect } from "chai";
 
 const helloWorldTask = new Task("hello-world");
@@ -78,5 +79,23 @@ describe("Task", () => {
 
   it("assignmentReminderTask should have lower score than processDailySalesTask", () => {
     expect(assignmentReminderTask.getScore()).to.be.below(processDailySalesTask.getScore());
+  });
+
+  it("should allow to create a new Task from JSON string", () => {
+    const task = Task.fromJson("{ \"name\": \"new-task\" }");
+    expect(task.id.length).to.be.eq(36);
+    expect(task.id[14]).to.be.eq("4");
+    expect(task.name).to.be.eq("new-task");
+  });
+
+  it("should allow to create a new Task from JSON object", () => {
+    const task = Task.fromJson({ name: "new-task" });
+    expect(task.id.length).to.be.eq(36);
+    expect(task.id[14]).to.be.eq("4");
+    expect(task.name).to.be.eq("new-task");
+  });
+
+  it("should not allow to create an unnamed Task", () => {
+    expect(Task.fromJson.bind(null, { })).to.throw(Error, msg.TASK_NAME_REQUIRED);
   });
 });

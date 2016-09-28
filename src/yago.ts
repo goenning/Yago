@@ -6,9 +6,7 @@ import { EventEmitter } from "events";
 import { CronJob } from "cron";
 import { Logger } from "./logger";
 import { StandardLogger } from "./logger/standard_logger";
-import * as express from "express";
-import { Server } from "http";
-import * as bodyParser from "body-parser";
+import { ApiServer } from "./api_server";
 
 export interface YagoOptions {
   queue?: TaskQueue;
@@ -21,9 +19,7 @@ export class Yago extends EventEmitter {
   public readonly logger: Logger;
   public readonly runners: { [key: string]: ITaskRunnerClass };
   public readonly interval: number;
-
-  private app: express.Express;
-  private server: Server;
+  private server: ApiServer;
   private timer: NodeJS.Timer;
 
   constructor(options?: YagoOptions) {
@@ -32,6 +28,8 @@ export class Yago extends EventEmitter {
     this.logger = options && options.logger ? options.logger : new StandardLogger(process.stdout);
     this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
     this.interval = options && options.interval ? options.interval : 500;
+    this.server = new ApiServer(this.queue);
+    this.queue.on("enqueued", this.emit.bind(this, "enqueued"));
   }
 
   register(runner: ITaskRunnerClass): void {
@@ -49,29 +47,18 @@ export class Yago extends EventEmitter {
 
   enqueue(taskName: string, options?: TaskOptions): Promise<Task> {
     const task = new Task(taskName, options);
-    this.emit("enqueue", task);
     return this.queue.enqueue(task);
   }
 
   start(): void {
-    this.app = express();
-    this.app.use(bodyParser.json());
-
-    this.app.post("/api/enqueue", (req, res) => {
-      this.enqueue(req.body.name, req.body.options);
-      res.send();
-    });
-
-    this.server = this.app.listen(8888);
-
+    this.server.start(8888);
     this.timer = setInterval(() => {
       this._processQueue();
     }, this.interval);
   }
 
   stop(): void {
-    if (this.server)
-      this.server.close();
+    this.server.stop();
     clearInterval(this.timer);
   }
 
