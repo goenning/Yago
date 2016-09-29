@@ -1,5 +1,5 @@
 import { Task, TaskPriority } from "../src/task";
-import * as msg from "../src/messages";
+import { TASK_NAME_REQUIRED } from "../src/consts";
 import { expect } from "chai";
 
 const helloWorldTask = new Task("hello-world");
@@ -96,6 +96,6 @@ describe("Task", () => {
   });
 
   it("should not allow to create an unnamed Task", () => {
-    expect(Task.fromJson.bind(null, { })).to.throw(Error, msg.TASK_NAME_REQUIRED);
+    expect(Task.fromJson.bind(null, { })).to.throw(Error, TASK_NAME_REQUIRED);
   });
 });

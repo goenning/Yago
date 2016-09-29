@@ -50,8 +50,8 @@ export class Yago extends EventEmitter {
     return this.queue.enqueue(task);
   }
 
-  start(): void {
-    this.server.start(8888);
+  start(port: number): void {
+    this.server.start(port);
     this.timer = setInterval(() => {
       this._processQueue();
     }, this.interval);

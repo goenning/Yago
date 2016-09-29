@@ -1,7 +1,6 @@
 import { Task } from "./task";
 import { Logger } from "./logger";
-
-export const DEFAULT_RETRY_COUNT = 3;
+import { DEFAULT_RETRY_COUNT } from "./consts";
 
 export function RunTask(taskName: string) {
     return function (target: ITaskRunnerClass) {

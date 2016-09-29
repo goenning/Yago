@@ -7,15 +7,24 @@ import { Task } from "../src/task";
 interface TestItem {
   name: string;
   newQueue: () => TaskQueue;
+  enabled: boolean;
 }
 
 const items: TestItem[] = [
-  { name: "InProcessTaskQueue", newQueue: () => new InProcessTaskQueue() },
-  { name: "RedisQueue", newQueue: () => new RedisTaskQueue("redis://localhost:6060") }
+  { 
+    name: "InProcessTaskQueue", 
+    newQueue: () => new InProcessTaskQueue(),
+    enabled: true
+  },
+  { 
+    name: "RedisQueue", 
+    newQueue: () => new RedisTaskQueue("redis://localhost:6060"),
+    enabled: process.platform !== "win32" //RedisQueue should be ignored on Windows...
+  }
 ];
 
 items.forEach((item) => {
-  describe(item.name, () => {
+  (item.enabled ? describe : describe.skip)(item.name, () => {
     let queue: TaskQueue;
     beforeEach(() => {
       queue = item.newQueue();

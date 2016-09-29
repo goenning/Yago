@@ -1,6 +1,6 @@
 # Yago
 
-An asynchronous task runner for Node.js ecosystem.
+An asynchronous task runner built to be easy to use, safe and scalable. Powered by Node.js and TypeScript.
 
 [![NPM](https://img.shields.io/npm/v/yago.svg)](https://www.npmjs.com/package/yago)
 [![Build](https://travis-ci.org/goenning/yago.svg?branch=master)](https://travis-ci.org/goenning/yago)
@@ -8,7 +8,7 @@ An asynchronous task runner for Node.js ecosystem.
 ![Dependencies](https://david-dm.org/goenning/yago.svg)
 ![devDependencies](https://david-dm.org/goenning/yago/dev-status.svg#info=devDependencies)
 
-# Definitions:
+# How it works
 
 ## TaskRunner
 It's a class that knows how to run a Task. 

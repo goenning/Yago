@@ -3,8 +3,8 @@ import { ApiServer } from "../src/api_server";
 import { TaskQueue } from "../src/task_queue";
 import { TaskPriority } from "../src/task";
 import { InProcessTaskQueue } from "../src/inprocess_task_queue";
-import * as msg from "../src/messages";
-import * as request from "request";
+import { TASK_NAME_REQUIRED } from "../src/consts";
+import { post } from "./helper/local_request";
 
 describe("API Server", () => {
   let server: ApiServer;
@@ -20,63 +20,47 @@ describe("API Server", () => {
     server.stop();
   });
 
-  it("should queue task when using HTTP API", (done) => {
-    const data = {
+  it("should queue task when using HTTP API", async () => {
+    const result = await post("/api/enqueue", {
       name: "hello-world-via-api"
-    };
-    request.post("http://localhost:8888/api/enqueue", { json: data }, () => {
-      queue.count().then((count) => {
-        expect(count).to.be.eq(1);
-        done();
-      }).catch(done);
     });
+    const count = await queue.count();
+    expect(count).to.be.eq(1);
   });
 
-  it("should return task id from HTTP API call", (done) => {
-    const data = {
+  it("should return task id from HTTP API call", async () => {
+    const result = await post("/api/enqueue", {
       name: "hello-world-via-api"
-    };
-    request.post("http://localhost:8888/api/enqueue", { json: data }, (err, res, body) => {
-      queue.dequeue().then((task) => {
-        expect(task!.id).to.be.eq(body.id);
-        done();
-      }).catch(done);
     });
+    const task = await queue.dequeue();
+    expect(task!.id).to.be.eq(result.body.id);
   });
 
-  it("should queue task with custom properties", (done) => {
-    const data = {
+  it("should queue task with custom properties", async () => {
+    const result = await post("/api/enqueue", {
       name: "hello-world-via-api",
       priority: TaskPriority.High,
       payload: {
         name: "Maxx",
         age: 22
       }
-    };
-    request.post("http://localhost:8888/api/enqueue", { json: data }, (err, res, body) => {
-      queue.dequeue().then((task) => {
-        expect(task!.id).to.be.eq(body.id);
-        expect(task!.name).to.be.eq(data.name);
-        expect(task!.priority).to.be.eq(data.priority);
-        expect(task!.payload).to.deep.equal(data.payload);
-        done();
-      }).catch(done);
     });
+    const task = await queue.dequeue();
+    expect(task!.id).to.be.eq(result.body.id);
+    expect(task!.name).to.be.eq("hello-world-via-api");
+    expect(task!.priority).to.be.eq(TaskPriority.High);
+    expect(task!.payload).to.deep.equal({ name: "Maxx", age: 22 });
   });
 
-  it("should return 404 when requesting unknown route", (done) => {
-    request.post("http://localhost:8888/api/dummy", { }, (err, res, body) => {
-      expect(res.statusCode).to.be.eq(404);
-      done();
-    });
+  it("should return 404 when requesting unknown route", async () => {
+    const result = await post("/api/dummy");
+    expect(result.response.statusCode).to.be.eq(404);
   });
 
-  it("should return 500 when something goes wrong", (done) => {
+  it("should return 500 when something goes wrong", async () => {
     const data = { };
-    request.post("http://localhost:8888/api/enqueue", { json: data }, (err, res, body) => {
-      expect(res.statusCode).to.be.eq(500);
-      expect(body.error).to.be.eq(msg.TASK_NAME_REQUIRED);
-      done();
-    });
+    const result = await post("/api/enqueue", data);
+    expect(result.response.statusCode).to.be.eq(500);
+    expect(result.body.error).to.be.eq(TASK_NAME_REQUIRED);
   });
 });

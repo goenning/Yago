@@ -1,5 +1,5 @@
 import { v4 } from "node-uuid";
-import * as msg from "./messages";
+import { TASK_NAME_REQUIRED } from "./consts";
 
 export interface TaskOptions {
   priority?: TaskPriority;
@@ -24,7 +24,7 @@ export class Task {
 
   constructor(name: string, options?: TaskOptions | (() => TaskOptions)) {
     if (!name)
-      throw new Error(msg.TASK_NAME_REQUIRED);
+      throw new Error(TASK_NAME_REQUIRED);
 
     this.id = v4();
     this.name = name;

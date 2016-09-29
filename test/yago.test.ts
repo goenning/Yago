@@ -5,11 +5,14 @@ import { Logger } from "../src/logger";
 import { StandardLogger } from "../src/logger/standard_logger";
 import { MemoryLogger } from "./helper/memory_logger";
 import { InProcessTaskQueue } from "../src/inprocess_task_queue";
-import { DEFAULT_RETRY_COUNT, ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
-import { HelloWorldTaskRunner } from "./dummy/helloworld_task_runner";
-import { ThrowErrorTaskRunner } from "./dummy/throwerror_task_runner";
-import { NoNameTaskRunner } from "./dummy/noname_task_runner";
-import * as request from "request";
+import { DEFAULT_RETRY_COUNT } from "../src/consts";
+import { ExecutionResult, ExecutionResultOutcome } from "../src/task_runner";
+import { 
+  HelloWorldTaskRunner, 
+  ThrowErrorTaskRunner, 
+  NoNameTaskRunner 
+} from "./runners";
+import { post } from "./helper/local_request";
 
 describe("Yago", () => {
   let yago: Yago;
@@ -50,7 +53,7 @@ describe("Yago", () => {
       }
     });
 
-    yago.start();
+    yago.start(8888);
   });
 
   it("should emit processed event", (done) => {
@@ -62,7 +65,7 @@ describe("Yago", () => {
       done();
     });
 
-    yago.start();
+    yago.start(8888);
   });
 
   it("should retry more times based on TaskRunner retry count", (done) => {
@@ -75,31 +78,29 @@ describe("Yago", () => {
         done();
     });
 
-    yago.start();
+    yago.start(8888);
   });
 
   it("should enqueue new task every second", (done) => {
-    yago.enqueue("hello-world");
     yago.schedule("* * * * * *", "hello-world");
 
     yago.on("enqueued", (task: Task) => {
+      yago.removeAllListeners();
       expect(task.name).to.be.eq("hello-world");
       done();
     });
 
-    yago.start();
+    yago.start(8888);
   });
 
   it("should emit ignored event for unknown task", (done) => {
-    yago.enqueue("send-email");
-
-    let count = 0;
     yago.on("ignored", (task: Task) => {
       expect(task.name).to.be.eq("send-email");
       done();
     });
 
-    yago.start();
+    yago.enqueue("send-email");
+    yago.start(8888);
   });
 
   it("should process task with payload", (done) => {
@@ -110,7 +111,7 @@ describe("Yago", () => {
       done();
     });
 
-    yago.start();
+    yago.start(8888);
   });
 
   it("should throw error when registering unnamed TaskRunners", () => {
@@ -118,13 +119,14 @@ describe("Yago", () => {
   });
 
   it("should queue task when using HTTP API", (done) => {
-    yago.start();
     yago.on("enqueued", (task: Task) => {
       expect(task.name).to.be.eq("hello-world-via-api");
       done();
     });
+    
+    yago.start(8888);
 
     const data = { name: "hello-world-via-api" };
-    request.post("http://localhost:8888/api/enqueue", { json: data });
+    post("/api/enqueue", data);
   });
 });
