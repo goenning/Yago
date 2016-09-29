@@ -6,7 +6,7 @@ import { EventEmitter } from "events";
 import { CronJob } from "cron";
 import { Logger } from "./logger";
 import { StandardLogger } from "./logger/standard_logger";
-import { ApiServer } from "./api_server";
+import { HttpServer } from "./http_server";
 
 export interface YagoOptions {
   queue?: TaskQueue;
@@ -19,7 +19,7 @@ export class Yago extends EventEmitter {
   public readonly logger: Logger;
   public readonly runners: { [key: string]: ITaskRunnerClass };
   public readonly interval: number;
-  private server: ApiServer;
+  private server: HttpServer;
   private timer: NodeJS.Timer;
 
   constructor(options?: YagoOptions) {
@@ -28,7 +28,7 @@ export class Yago extends EventEmitter {
     this.logger = options && options.logger ? options.logger : new StandardLogger(process.stdout);
     this.queue = options && options.queue ? options.queue : new InProcessTaskQueue();
     this.interval = options && options.interval ? options.interval : 500;
-    this.server = new ApiServer(this.queue);
+    this.server = new HttpServer(this.queue);
     this.queue.on("enqueued", this.emit.bind(this, "enqueued"));
   }
 

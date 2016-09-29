@@ -4,7 +4,7 @@ import * as bodyParser from "body-parser";
 import { TaskQueue } from "./task_queue";
 import { Task } from "./task";
 
-export class ApiServer {
+export class HttpServer {
   private app: express.Express;
   private server: Server;
 

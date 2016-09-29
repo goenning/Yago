@@ -1,18 +1,18 @@
 import { expect } from "chai";
-import { ApiServer } from "../src/api_server";
+import { HttpServer } from "../src/http_server";
 import { TaskQueue } from "../src/task_queue";
 import { TaskPriority } from "../src/task";
 import { InProcessTaskQueue } from "../src/inprocess_task_queue";
 import { TASK_NAME_REQUIRED } from "../src/consts";
 import { post } from "./helper/local_request";
 
-describe("API Server", () => {
-  let server: ApiServer;
+describe("HTTP Server", () => {
+  let server: HttpServer;
   let queue: TaskQueue;
 
   beforeEach(() => {
     queue = new InProcessTaskQueue();
-    server = new ApiServer(queue);
+    server = new HttpServer(queue);
     server.start(8888);
   });
 
