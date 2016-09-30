@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "homepage": "https://github.com/goenning/yago",
   "description": "An asynchronous task runner for Node.js ecosystem.",
+  "main": "./dist/src/index.js",
+  "typings": "./dist/src/index.d.ts",
   "keywords": [
     "job",
     "background",

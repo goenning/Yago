@@ -1,0 +1,17 @@
+sample
+src
+node_modules
+coverage": true,
+npm-debug.log
+.nyc_output
+test
+typings
+.nycrc
+.travis.yml
+README.md
+tsconfig.json
+tslint.json
+webpack.config.js
+
+dist/sample
+dist/test
