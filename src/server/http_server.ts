@@ -12,7 +12,7 @@ export class HttpServer {
     this.app = express();
     this.app.use(bodyParser.json());
 
-    this.app.use(express.static(__dirname + "/public"));
+    this.app.use(express.static(__dirname + "/www"));
     this.app.post("/api/enqueue", async (req, res, next) => {
       try {
         const task = await queue.enqueue(Task.fromJson(req.body));

@@ -1,4 +1,4 @@
-import { Yago } from "../src/yago";
+import { Yago } from "../src";
 import { TaskRunner, RedisTaskQueue, RunTask, ExecutionContext } from "../src";
 
 @RunTask("greet")

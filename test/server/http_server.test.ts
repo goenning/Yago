@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { HttpServer } from "../src/http_server";
-import { TaskQueue } from "../src/task_queue";
-import { TaskPriority } from "../src/task";
-import { InProcessTaskQueue } from "../src/inprocess_task_queue";
-import { TASK_NAME_REQUIRED } from "../src/consts";
+import { HttpServer } from "../../src/server/http_server";
+import { TaskQueue } from "../../src/server/task_queue";
+import { TaskPriority } from "../../src/server/task";
+import { InProcessTaskQueue } from "../../src/server/inprocess_task_queue";
+import { TASK_NAME_REQUIRED } from "../../src/server/consts";
 import { post } from "./helper/local_request";
 
 describe("HTTP Server", () => {

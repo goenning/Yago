@@ -2,7 +2,7 @@ import {
   RunTask, TaskRunner,
   ExecutionResult, ExecutionResultOutcome,
   ExecutionContext
-} from "../../src/task_runner";
+} from "../../../src/server/task_runner";
 
 @RunTask("hello-world")
 export class HelloWorldTaskRunner extends TaskRunner {

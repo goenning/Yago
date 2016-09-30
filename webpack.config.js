@@ -1,7 +1,7 @@
 module.exports = {
-  entry: "./src/public/index.tsx",
+  entry: "./src/www/index.tsx",
   output: {
-    path: __dirname + "/dist/src/public",
+    path: __dirname + "/dist/src/www",
     filename: "bundle.js",
   },
   devtool: "source-map",
@@ -16,7 +16,7 @@ module.exports = {
       },
       { 
         test: /\.(html|png|min\.css|woff|woff2|eot|ttf|svg|jpg|gif)$/, 
-        loader: "file?name=[path][name].[ext]&context=src/public" 
+        loader: "file?name=[path][name].[ext]&context=src/www" 
       },
     ],
     preLoaders: [

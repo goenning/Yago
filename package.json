@@ -25,8 +25,8 @@
     "sample": "nodemon dist/sample/index.js --watch dist/sample/index.js",
     "lint": "tslint src/**/*.ts test/**/*.ts sample/**/*.ts",
     "build": "tsc && webpack",
-    "test": "mocha --recursive --compilers ts:ts-node/register --bail",
-    "coverage": "nyc npm t",
+    "test": "mocha dist/test/server --recursive",
+    "coverage": "nyc npm test",
     "update-coveralls": "cat coverage/lcov.info | node ./node_modules/coveralls/bin/coveralls.js",
     "start-redis": "docker run -d -p 6060:6379 redis"
   },

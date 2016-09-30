@@ -1,10 +1,20 @@
 import * as React from "react";
 
-export interface HelloProps {
+export interface AppProps {
   framework: string;
 }
 
-export class App extends React.Component<HelloProps, {}> {
+export interface AppState {
+  value: string;
+}
+
+export class App extends React.Component<AppProps, AppState> {
+  
+  constructor() {
+    super();
+    this.setState({ value: "123" });
+  }
+
   componentDidMount?(): void {
     $(".ui.dropdown").dropdown();
   }

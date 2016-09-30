@@ -1,6 +1,6 @@
 import {
   RunTask, TaskRunner, ExecutionContext
-} from "../../src/task_runner";
+} from "../../../src/server/task_runner";
 
 @RunTask("throw-error")
 export class ThrowErrorTaskRunner extends TaskRunner {

@@ -4,17 +4,7 @@
   "functions": 95,
   "branches": 95,
   "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "**/*.d.ts"
-  ],
-  "extension": [
-    ".ts"
-  ],
-  "require": [
-    "ts-node/register"
+    "dist/src/**/*.js"
   ],
   "reporter": [
     "json",
@@ -22,6 +12,6 @@
     "lcov",
     "text-summary"
   ],
-  "check-coverage": true,
-  "all": true
+  "sourceMap": true,
+  "check-coverage": true
 }
