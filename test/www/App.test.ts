@@ -4,6 +4,6 @@ import { expect } from "chai";
 describe("App Test", () => {
   it("should start with default state", () => {
     const app = new App();
-    expect(app.state.value).to.be.eq("123");
+    expect(app.value).to.be.eq(123);
   })
 });

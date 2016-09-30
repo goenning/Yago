@@ -9,10 +9,11 @@ export interface AppState {
 }
 
 export class App extends React.Component<AppProps, AppState> {
+  public value: number;
   
   constructor() {
     super();
-    this.setState({ value: "123" });
+    this.value = 123;
   }
 
   componentDidMount?(): void {

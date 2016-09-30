@@ -8,7 +8,10 @@ import * as $ from "jquery";
 
 require("./index.html");
 
-ReactDOM.render(
-    <App framework="TypeScript" />,
-    document.getElementById("example"),
-);
+const element = document.getElementById("example");
+if (element) {
+    ReactDOM.render(
+        <App framework="TypeScript" />,
+        document.getElementById("example"),
+    );
+}
