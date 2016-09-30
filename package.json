@@ -22,7 +22,6 @@
     "url": "https://github.com/goenning/yago.git"
   },
   "scripts": {
-    "prepublish": "npm run build && npm run coverage",
     "sample": "nodemon dist/sample/index.js --watch dist/sample/index.js",
     "lint": "tslint src/**/*.ts test/**/*.ts sample/**/*.ts",
     "build": "tsc && webpack",
