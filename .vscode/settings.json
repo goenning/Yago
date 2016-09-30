@@ -3,7 +3,6 @@
   "files.exclude": {
     "dist": true,
     "node_modules": true,
-    "typings": true,
     "coverage": true,
     "npm-debug.log": true,
     ".nyc_output": true
