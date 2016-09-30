@@ -1,6 +1,6 @@
 {
   "name": "yago",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/goenning/yago",
   "description": "An asynchronous task runner for Node.js ecosystem.",
   "main": "./dist/src/index.js",
