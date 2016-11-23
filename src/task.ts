@@ -1,4 +1,4 @@
-import { v4 } from "node-uuid";
+import { v4 } from "uuid";
 import { TASK_NAME_REQUIRED } from "./consts";
 
 export interface TaskOptions {
